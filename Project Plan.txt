@@ -1,0 +1,29 @@
+/////////
+//Wires//
+/////////
+
+ABOUT:
+    - Heavily inspired by wiremod
+    - Also has boolean logic capabilities
+        - 0 = false
+        - > 0 = true (any value 1 or more acts as true)
+    - Wires carry data between two nodes
+
+
+PLAN:
+    - Create node system
+    - Implement logic tick (Can be greater or less than FPS, IE Not tied)
+    - Camera Controls
+    - Data line types (color coded: number (float or int), string, array(?))
+    - Implement components (Logic group, displays, etc)
+
+HIERARCHY:
+    - Circuit
+        - Components
+            - Nodes
+                - Node Connectors
+                    - Input
+                    - Output
+            - Wires
+                - Origin Node Connector
+                - Destination Node Connector
