@@ -8,10 +8,15 @@ import processing.core.PApplet;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class Main extends PApplet {
 
     MouseComponent mouseComponent;
     public Circuit masterCircuit;
+
 
     public static void main(String[] args) {
         PApplet.main("com.bobby.Main");
@@ -46,6 +51,8 @@ public class Main extends PApplet {
     @Override
     public void mousePressed() {
         masterCircuit.mousePressed();
+
+
     }
 
     @Override
@@ -57,4 +64,7 @@ public class Main extends PApplet {
         masterCircuit.mouseWheel(event);
     }
 
+    public void keyPressed(){
+
+    }
 }

@@ -10,7 +10,7 @@ public class SSD extends Node {
 
     public SSD(PApplet app, int x, int y) {
         super(app, x, y, 70, 110, 0, 8, 0);
-        color = app.color(0,0,0, 100);
+        color = app.color(0,0,0, 200);
         state = new boolean[8];
     }
 

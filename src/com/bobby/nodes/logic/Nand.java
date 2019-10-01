@@ -10,7 +10,7 @@ public class Nand extends Node {
 
     public Nand(PApplet app, int x, int y) {
         super(app, x, y, 45, 45, 3, 2, 1);
-        color = app.color(255,255,100, 100);
+        color = app.color(255,255,100, 200);
     }
 
     public void tick(){

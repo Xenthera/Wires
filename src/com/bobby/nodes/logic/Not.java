@@ -11,7 +11,7 @@ public class Not extends Node {
 
     public Not(PApplet app, int x, int y) {
         super(app, x, y, 40, 30, 3, 1, 1);
-        color = app.color(100,100,100, 100);
+        color = app.color(100,100,100, 200);
         //this.tickDelay = 60;
         this.scheduleTick(this.tickDelay);
     }

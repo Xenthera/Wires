@@ -9,7 +9,7 @@ public class Light extends Node {
 
     public Light(PApplet app, int x, int y) {
         super(app, x, y, 40, 40, 40, 1, 0);
-        color = app.color(0,0,0, 100);
+        color = app.color(0,0,0, 200);
     }
 
     public void tick(){

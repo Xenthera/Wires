@@ -10,7 +10,7 @@ public class Nor extends Node {
 
     public Nor(PApplet app, int x, int y) {
         super(app, x, y, 45, 45, 3, 2, 1);
-        color = app.color(255,100,255, 100);
+        color = app.color(255,100,255, 200);
     }
 
     public void tick(){

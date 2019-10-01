@@ -10,7 +10,7 @@ public class Xor extends Node {
 
     public Xor(PApplet app, int x, int y) {
         super(app, x, y, 45, 45, 3, 2, 1);
-        color = app.color(100,255,255, 100);
+        color = app.color(100,255,255, 200);
     }
 
     public void tick(){

@@ -11,7 +11,7 @@ public class ToggleSwitch extends Node {
 
     public ToggleSwitch(PApplet app, int x, int y) {
         super(app, x, y, 30, 30, 2, 0, 1);
-        color = app.color(0,255,255, 100);
+        color = app.color(0,255,255, 200);
     }
 
     public void tick(){

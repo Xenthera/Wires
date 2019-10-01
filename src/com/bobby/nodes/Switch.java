@@ -13,7 +13,7 @@ public class Switch extends Node {
 
     public Switch(PApplet app, int x, int y) {
         super(app, x, y, 30, 30, 2, 0, 1);
-        color = app.color(255,0,255, 100);
+        color = app.color(255,0,255, 200);
     }
 
     public void tick(){

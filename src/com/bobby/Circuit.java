@@ -8,9 +8,11 @@ import processing.event.MouseEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Circuit {
-    ArrayList<Component> sceneComponents;
+    ArrayList<Component> sceneComponents, sceneComponentsReversed;
     MouseComponent mouse;
     PApplet app;
 
@@ -21,6 +23,7 @@ public class Circuit {
     public Circuit(PApplet app, MouseComponent mouse){
         this.mouse = mouse;
         sceneComponents = new ArrayList<>();
+        sceneComponentsReversed = new ArrayList<>();
         this.app = app;
         components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder"};
 
@@ -30,10 +33,16 @@ public class Circuit {
 
     public void addComponent(Component component){
         this.sceneComponents.add(component);
+        this.sceneComponents.sort(Comparator.comparing(Component::getLayer));
+        this.sceneComponentsReversed = (ArrayList<Component>) this.sceneComponents.clone();
+        Collections.reverse(this.sceneComponentsReversed);
     }
 
     public void removeComponent(Component component){
         this.sceneComponents.remove(component);
+        this.sceneComponents.sort(Comparator.comparing(Component::getLayer));
+        this.sceneComponentsReversed = this.sceneComponents;
+        Collections.reverse(this.sceneComponentsReversed);
     }
 
     public void tick(){
@@ -56,15 +65,20 @@ public class Circuit {
     }
 
     public void draw(){
+
+        //Collections.reverse(this.sceneComponents);
         for (Component c : sceneComponents) {
+            c.draw();
+        }
+
+        //Collections.reverse(this.sceneComponents);
+        for (Component c : sceneComponentsReversed) {
             if(c.isHovered((int)mouse.position.x, (int)mouse.position.y)){
                 c.hover();
                 break;
             }
         }
-        for (Component c : sceneComponents) {
-            c.draw();
-        }
+        //Collections.reverse(this.sceneComponents);
         app.textAlign(app.LEFT, app.TOP);
         app.fill(255, 200,0);
         app.text("Current Component: " + this.components[this.curComponent], 5, 5);
@@ -102,7 +116,7 @@ public class Circuit {
     public void mousePressed() {
         mouse.mousePressed(mouse, app.mouseButton);
         boolean hit = false;
-        for (Component c : sceneComponents) {
+        for (Component c : sceneComponentsReversed) {
             if(c.isGrabbable) {
                 if (c.isHovered((int) mouse.position.x, (int) mouse.position.y)) {
                     mouse.attachedComponent = c;
@@ -166,7 +180,7 @@ public class Circuit {
             mouse.attachedComponent.mouseReleased(mouse);
             mouse.attachedComponent = null;
         }else{
-            for (Component c : sceneComponents) {
+            for (Component c : sceneComponentsReversed) {
                 if(c.isHovered((int) mouse.position.x, (int) mouse.position.y)) {
                     c.mouseReleased(mouse);
                     break;

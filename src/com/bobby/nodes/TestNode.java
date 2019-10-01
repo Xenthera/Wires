@@ -8,7 +8,7 @@ public class TestNode extends Node {
 
     public TestNode(PApplet app, int x, int y, int width, int height, int r) {
         super(app, x, y, width, height, r, 1, 1);
-        color = app.color(255,100,255, 100);
+        color = app.color(255,100,255, 200);
     }
 
     public void tick(){

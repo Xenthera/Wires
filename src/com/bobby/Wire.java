@@ -14,7 +14,7 @@ public class Wire extends Component {
         super(app, 0,0);
         this.origin = origin;
         this.destination = destination;
-
+        this.layer = -1;
         this.origin.addWire(this);
         this.destination.addWire(this);
     }

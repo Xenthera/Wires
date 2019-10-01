@@ -10,7 +10,7 @@ public class BCDToSSDDecoder extends Node {
 
     public BCDToSSDDecoder(PApplet app, int x, int y) {
         super(app, x, y, 55, 120, 2, 4, 7);
-        color = app.color(0,0,0, 100);
+        color = app.color(0,0,0, 200);
         lookUp = new int[][]{{1,1,1,1,1,1,0},{0,1,1,0,0,0,0},{1,1,0,1,1,0,1},{1,1,1,1,0,0,1},
                             {0,1,1,0,0,1,1},{1,0,1,1,0,1,1},{1,0,1,1,1,1,1},{1,1,1,0,0,0,0},
                             {1,1,1,1,1,1,1},{1,1,1,1,0,1,1},};

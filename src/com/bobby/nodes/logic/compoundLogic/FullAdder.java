@@ -10,7 +10,7 @@ public class FullAdder extends Node {
 
     public FullAdder(PApplet app, int x, int y) {
         super(app, x, y, 55, 85, 3, 3, 2);
-        color = app.color(0,100,255, 100);
+        color = app.color(0,100,255, 200);
     }
 
     public void tick(){

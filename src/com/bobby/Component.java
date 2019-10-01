@@ -16,6 +16,9 @@ public abstract class Component {
         this.applet = app;
         this.position = new PVector(x, y);
     }
+    public int getLayer(){
+        return this.layer;
+    }
 
 //    public Component(PApplet app, int x, int y, Component parent){
 //        this.applet = app;

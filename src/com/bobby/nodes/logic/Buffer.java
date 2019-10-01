@@ -10,7 +10,7 @@ public class Buffer extends Node {
 
     public Buffer(PApplet app, int x, int y) {
         super(app, x, y, 18, 15, 3, 1, 1);
-        color = app.color(30, 100);
+        color = app.color(30, 200);
         this.tickDelay = 0;
     }
 
