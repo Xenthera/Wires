@@ -4,16 +4,14 @@ import com.bobby.MouseComponent;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-import java.awt.event.MouseEvent;
-
-public class Switch extends Node {
+public class ToggleSwitch extends Node {
 
     public int color;
     public boolean isOn = false;
 
-    public Switch(PApplet app, int x, int y) {
+    public ToggleSwitch(PApplet app, int x, int y) {
         super(app, x, y, 30, 30, 2, 0, 1);
-        color = app.color(255,0,255, 100);
+        color = app.color(0,255,255, 100);
     }
 
     public void tick(){
@@ -65,13 +63,8 @@ public class Switch extends Node {
             this.parent = mouse;
 
         }else if(button == applet.RIGHT){
-            this.isOn = true;
+            this.isOn = !this.isOn;
         }
         return new PVector(-(mouse.position.x - this.position.x), -(mouse.position.y - this.position.y));
-    }
-
-    public void mouseReleased(MouseComponent mouse){
-        super.mouseReleased(mouse);
-        this.isOn = false;
     }
 }

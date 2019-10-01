@@ -19,8 +19,12 @@ public class FullAdder extends Node {
         boolean c = this.inputs[2].data > 0 ? true : false;
         boolean sum = c ^ (a ^ b);
         boolean carry = (a && b) || (b && c) || (a && c);
-        this.outputs[0].sendData(sum ? 1 : 0);
-        this.outputs[1].sendData(carry ? 1 : 0);
+
+        if(this.tickDelayCounter == 0) {
+            this.outputs[0].sendData(sum ? 1 : 0);
+            this.outputs[1].sendData(carry ? 1 : 0);
+        }
+        super.tick();
     }
 
     public void draw() {

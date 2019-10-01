@@ -17,7 +17,10 @@ public class Xor extends Node {
         this.inValue = this.inputs[0].data > 0 ^ this.inputs[1].data > 0 ? true : false;
 
         int out = this.inValue ? 1 : 0;
-        this.outputs[0].sendData(out);
+        if(this.tickDelayCounter == 0) {
+            this.outputs[0].sendData(out);
+        }
+        super.tick();
     }
 
     public void draw() {

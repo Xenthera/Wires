@@ -8,17 +8,26 @@ public class Not extends Node {
     int color;
     boolean inValue = false;
 
+
     public Not(PApplet app, int x, int y) {
         super(app, x, y, 40, 30, 3, 1, 1);
         color = app.color(100,100,100, 100);
+        //this.tickDelay = 60;
+        this.scheduleTick(this.tickDelay);
     }
 
     public void tick(){
         this.inValue = this.inputs[0].data > 0 ? true : false;
 
         int out = this.inValue ? 0 : 1;
-        this.outputs[0].sendData(out);
+
+        if(this.tickDelayCounter == 0) {
+            this.outputs[0].sendData(out);
+        }
+        super.tick();
     }
+
+
 
     public void draw() {
         applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);

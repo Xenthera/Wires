@@ -11,10 +11,14 @@ public class Buffer extends Node {
     public Buffer(PApplet app, int x, int y) {
         super(app, x, y, 18, 15, 3, 1, 1);
         color = app.color(30, 100);
+        this.tickDelay = 0;
     }
 
     public void tick(){
-        this.outputs[0].sendData(this.inputs[0].data);
+        if(this.tickDelayCounter == 0) {
+            this.outputs[0].sendData(this.inputs[0].data);
+        }
+        super.tick();
     }
 
     public void draw() {

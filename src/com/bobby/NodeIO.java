@@ -1,5 +1,6 @@
 package com.bobby;
 
+import com.bobby.nodes.Node;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -11,6 +12,8 @@ public class NodeIO extends Component {
     public static final int OUTPUT = 1;
     public int type;
     public ArrayList<Wire> wires;
+    public Node parent;
+    private int lastSent = -1;
 
     public int data;
 
@@ -19,6 +22,7 @@ public class NodeIO extends Component {
         this.layer = 1;
         this.type = type;
         this.wires = new ArrayList<>();
+        this.parent = (Node)parent;
     }
 
     public void addWire(Wire wire){
@@ -95,6 +99,10 @@ public class NodeIO extends Component {
     }
 
     public void receiveData(int data){
+        if(this.lastSent != data) {
+            this.parent.scheduleTick(this.parent.tickDelay);
+            this.lastSent = data;
+        }
         if(this.type == INPUT && wires.size() == 1) {
             this.data = data;
         }

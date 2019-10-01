@@ -13,6 +13,8 @@ public class Node extends Component {
     protected int radius;
     public NodeIO[] inputs;
     public NodeIO[] outputs;
+    public int tickDelay = 1;
+    protected int tickDelayCounter;
 
 
     public Node(PApplet app, int x, int y, int width, int height, int r, int numInputs, int numOutputs){
@@ -36,7 +38,9 @@ public class Node extends Component {
 
     @Override
     public void tick() {
-
+        if(this.tickDelayCounter > 0){
+            this.tickDelayCounter--;
+        }
     }
 
     @Override
@@ -102,5 +106,9 @@ public class Node extends Component {
         this.parent = null;
     }
 
+    public void scheduleTick(int delay){
+        //number of ticks until the gate outputs
+        this.tickDelayCounter = delay;
+    }
 
 }
