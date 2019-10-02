@@ -25,7 +25,7 @@ public class Circuit {
         sceneComponents = new ArrayList<>();
         sceneComponentsReversed = new ArrayList<>();
         this.app = app;
-        components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder"};
+        components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder", "logic.compoundLogic.BinaryToHexSSDDecoder"};
 
         int curComponent = 0;
 

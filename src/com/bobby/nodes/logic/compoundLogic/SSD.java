@@ -22,7 +22,7 @@ public class SSD extends Node {
 
     private void drawDisplay(){
         int on = applet.color(255,50,50);
-        int off = applet.color(100);
+        int off = applet.color(70);
         applet.strokeCap(applet.ROUND);
         applet.strokeWeight(8);
         applet.stroke(state[0] ? on : off);
