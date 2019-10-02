@@ -1,7 +1,7 @@
 Wires
 =====
 
-A program written in Java using processing for rendering. 
+A program written in Java using [processing](https://processing.org/) for rendering. 
 Heavily inspired by wiremod.
 ---
 
