@@ -6,7 +6,8 @@ Heavily inspired by wiremod.
 ---
 
 
-_Currently a work in progress_
+> Currently a work in progress.
+
 
 Version 0.0.2
 ---
