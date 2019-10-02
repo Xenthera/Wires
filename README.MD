@@ -12,7 +12,7 @@ Version 0.0.2
 ---
  **Changes**
  + Added Infinite Scrolling
- + Added Render Optimization (Object do not draw off screen)
+ + Added Render Optimization (Objects do not draw off screen)
  + Added Background
 
 <img src="https://i.imgur.com/QHnCiBE.png">
