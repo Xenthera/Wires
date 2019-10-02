@@ -15,6 +15,8 @@ Version 0.0.2
  + Added Infinite Scrolling
  + Added Render Optimization (Objects do not draw off screen)
  + Added Background
+ + Fixed Drawing Order (No more wires floating over your objects)
+ + Improved Rendering
 
 <img src="https://i.imgur.com/QHnCiBE.png">
 
