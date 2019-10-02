@@ -6,6 +6,7 @@ import processing.core.PVector;
 public abstract class Component {
 
     public PVector position;
+    public PVector size;
     public PVector parentOffset;
     public Component parent;
     protected PApplet applet;
@@ -15,6 +16,7 @@ public abstract class Component {
     public Component(PApplet app, int x, int y){
         this.applet = app;
         this.position = new PVector(x, y);
+
     }
     public int getLayer(){
         return this.layer;
@@ -31,6 +33,8 @@ public abstract class Component {
         this.position = new PVector(parent.position.x + localX, parent.position.y + localY);
         this.parent = parent;
     }
+
+    public abstract PVector getSize();
 
     //Logic update (not tied to framerate)
     public abstract void tick();

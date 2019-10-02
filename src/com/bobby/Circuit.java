@@ -41,7 +41,7 @@ public class Circuit {
     public void removeComponent(Component component){
         this.sceneComponents.remove(component);
         this.sceneComponents.sort(Comparator.comparing(Component::getLayer));
-        this.sceneComponentsReversed = this.sceneComponents;
+        this.sceneComponentsReversed = (ArrayList<Component>) this.sceneComponents.clone();
         Collections.reverse(this.sceneComponentsReversed);
     }
 
@@ -66,23 +66,20 @@ public class Circuit {
 
     public void draw(){
 
-        //Collections.reverse(this.sceneComponents);
-        for (Component c : sceneComponents) {
-            c.draw();
-        }
-
-        //Collections.reverse(this.sceneComponents);
         for (Component c : sceneComponentsReversed) {
             if(c.isHovered((int)mouse.position.x, (int)mouse.position.y)){
                 c.hover();
                 break;
             }
         }
-        //Collections.reverse(this.sceneComponents);
-        app.textAlign(app.LEFT, app.TOP);
-        app.fill(255, 200,0);
-        app.text("Current Component: " + this.components[this.curComponent], 5, 5);
-
+        Main temp = (Main)app;
+        for (Component c : sceneComponents) {
+            if((c.position.x + c.getSize().x) - temp.camera.position.x >= temp.screenPos.x && (c.position.y + c.getSize().y) - temp.camera.position.y >= temp.screenPos.y) {
+                if(c.position.x - temp.camera.position.x <= temp.screenPos.x + temp.screenSize.x && c.position.y - temp.camera.position.y <= temp.screenPos.y + temp.screenSize.y) {
+                    c.draw();
+                }
+            }
+        }
 
     }
 
@@ -113,12 +110,12 @@ public class Circuit {
         this.removeComponent(node);
     }
 
-    public void mousePressed() {
+    public void mousePressed(int mouseX, int mouseY) {
         mouse.mousePressed(mouse, app.mouseButton);
         boolean hit = false;
         for (Component c : sceneComponentsReversed) {
             if(c.isGrabbable) {
-                if (c.isHovered((int) mouse.position.x, (int) mouse.position.y)) {
+                if (c.isHovered(mouseX, mouseY)) {
                     mouse.attachedComponent = c;
                     c.parentOffset = c.mousePressed(mouse, app.mouseButton);
                     hit = true;
@@ -129,7 +126,7 @@ public class Circuit {
                     }
                     break;
                 }
-            }else if(c.isHovered((int) mouse.position.x, (int) mouse.position.y)) {
+            }else if(c.isHovered(mouseX, mouseY)) {
                 c.mousePressed(mouse, app.mouseButton);
                 hit = true;
                 if(app.mouseButton == app.CENTER){
@@ -149,7 +146,9 @@ public class Circuit {
             Class myClass = Class.forName("com.bobby.nodes." + this.components[this.curComponent]);
             Class[] args = {PApplet.class, int.class, int.class};
             Component c = (Component)myClass.getDeclaredConstructor(args).newInstance(this.app, (int)mouse.position.x, (int)mouse.position.y);
+
             this.addComponent(c);
+
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -162,6 +161,8 @@ public class Circuit {
                 e.printStackTrace();
             }
 
+        }else if(!hit && app.mouseButton == app.LEFT){
+            mouse.isScrolling = true;
         }
 
     }
@@ -172,7 +173,7 @@ public class Circuit {
     }
 
 
-    public void mouseReleased() {
+    public void mouseReleased(int mouseX, int mouseY) {
 
         mouse.mouseReleased(mouse);
 
@@ -181,7 +182,7 @@ public class Circuit {
             mouse.attachedComponent = null;
         }else{
             for (Component c : sceneComponentsReversed) {
-                if(c.isHovered((int) mouse.position.x, (int) mouse.position.y)) {
+                if(c.isHovered(mouseX, mouseY)) {
                     c.mouseReleased(mouse);
                     break;
                 }

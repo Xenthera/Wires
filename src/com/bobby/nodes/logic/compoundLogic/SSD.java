@@ -9,7 +9,7 @@ public class SSD extends Node {
     boolean[] state;
 
     public SSD(PApplet app, int x, int y) {
-        super(app, x, y, 70, 110, 0, 8, 0);
+        super(app, x, y, 70, 110, 3, 8, 0);
         color = app.color(0,0,0, 200);
         state = new boolean[8];
     }
@@ -46,7 +46,11 @@ public class SSD extends Node {
     }
 
     public void draw() {
-        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
+        applet.noStroke();
+        applet.fill(0, 90);
+        applet.rect(this.position.x + 8, this.position.y + 8, this.size.x, this.size.y, this.radius);
+
+        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 255);
         applet.strokeWeight(1);
         applet.fill(this.color);
         applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);

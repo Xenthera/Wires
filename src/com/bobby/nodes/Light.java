@@ -21,7 +21,7 @@ public class Light extends Node {
     }
 
     public void draw() {
-        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
+        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 255);
         applet.strokeWeight(2);
         applet.fill(this.color);
         applet.circle(this.position.x + this.size.x / 2, this.position.y + this.size.y / 2, 40);

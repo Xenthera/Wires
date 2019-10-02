@@ -39,6 +39,10 @@ public class BCDToSSDDecoder extends Node {
     }
 
     public void draw() {
+        applet.noStroke();
+        applet.fill(0, 70);
+        applet.rect(this.position.x + 8, this.position.y + 8, this.size.x, this.size.y, this.radius);
+
         applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
         applet.strokeWeight(2);
         applet.fill(this.color);

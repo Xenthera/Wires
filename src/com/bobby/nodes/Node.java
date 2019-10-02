@@ -36,6 +36,10 @@ public class Node extends Component {
         }
     }
 
+    public PVector getSize(){
+        return this.size;
+    }
+
     @Override
     public void tick() {
         if(this.tickDelayCounter > 0){

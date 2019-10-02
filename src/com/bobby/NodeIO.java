@@ -23,6 +23,11 @@ public class NodeIO extends Component {
         this.type = type;
         this.wires = new ArrayList<>();
         this.parent = (Node)parent;
+        this.size = new PVector(0,0);
+    }
+
+    public PVector getSize(){
+        return this.size;
     }
 
     public void addWire(Wire wire){
@@ -50,15 +55,15 @@ public class NodeIO extends Component {
 
     @Override
     public void draw() {
-        if(this.type == INPUT){
-            applet.stroke(0,100,255,200);
-            applet.fill(0,100,255,100);
-            applet.strokeWeight(1);
-        }else{
-            applet.stroke(255,255,0,200);
-            applet.fill(255,255,0,100);
-            applet.strokeWeight(1);
-        }
+//        if(this.type == INPUT){
+//            applet.stroke(0,100,255,200);
+//            applet.fill(0,100,255,100);
+//            applet.strokeWeight(1);
+//        }else{
+//            applet.stroke(255,255,0,200);
+//            applet.fill(255,255,0,100);
+//            applet.strokeWeight(1);
+//        }
 
         //applet.circle(this.position.x, this.position.y, 10);
     }

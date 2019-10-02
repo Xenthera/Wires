@@ -19,6 +19,10 @@ public class Wire extends Component {
         this.destination.addWire(this);
     }
 
+    public PVector getSize(){
+        return new PVector(PApplet.abs(this.origin.position.x - this.destination.position.x), PApplet.abs(this.origin.position.y - this.destination.position.y));
+    }
+
     @Override
     public void tick() {
         if(origin.data != 0){
@@ -30,7 +34,8 @@ public class Wire extends Component {
 
     @Override
     public void update() {
-
+        this.position.x = this.origin.position.x < this.destination.position.x ? this.origin.position.x : this.destination.position.x;
+        this.position.y = this.origin.position.y < this.destination.position.y ? this.origin.position.y : this.destination.position.y;
     }
 
     @Override
@@ -49,12 +54,11 @@ public class Wire extends Component {
 
 
         if(hasData) {
-            applet.stroke(0, 255, 0);
-            applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            applet.stroke(100, 100, 255);
         }else{
             applet.stroke(0,0,0);
-            applet.bezier(x + 5, y, x + dis/2, y, x2 - dis/2,y2,x2 - 5,y2);
         }
+        applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
 
         float halfX = (x + x2) / 2;
         float halfY = (y + y2) / 2;

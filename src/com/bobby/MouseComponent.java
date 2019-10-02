@@ -7,20 +7,50 @@ public class MouseComponent extends Component {
 
     Component attachedComponent;
     boolean isDrawingWire = false;
+    boolean isScrolling = false;
     PVector wireStart;
     NodeIO origin, destination;
+    PVector deltaMouse, oldMouse, newMouse;
 
     public MouseComponent(PApplet app, int x, int y){
         super(app, x, y);
+        this.deltaMouse = new PVector(0,0);
+        this.newMouse = new PVector(x,y);
+        this.oldMouse = new PVector(x,y);
+        this.size = new PVector(0,0);
     }
+
+    @Override
+    public PVector getSize() {
+        return this.size;
+    }
+
     @Override
     public void tick() {
 
     }
     @Override
     public void update(){
-        this.position.x = applet.mouseX;
-        this.position.y = applet.mouseY;
+
+        Main main = (Main)applet;
+
+        this.position.x = main.mouseX + main.camera.position.x;
+        this.position.y = main.mouseY + main.camera.position.y;
+
+        //Calculate Mouse Delta
+        this.newMouse.x = main.mouseX;
+        this.newMouse.y = main.mouseY;
+
+        this.deltaMouse.x = this.newMouse.x - this.oldMouse.x;
+        this.deltaMouse.y = this.newMouse.y - this.oldMouse.y;
+        this.oldMouse.set(this.newMouse);
+
+        if(isScrolling) {
+            if (main.mousePressed && main.mouseButton == main.LEFT) {
+                main.camera.position.x -= this.deltaMouse.x;
+                main.camera.position.y -= this.deltaMouse.y;
+            }
+        }
     }
 
     @Override
@@ -55,6 +85,7 @@ public class MouseComponent extends Component {
 
     @Override
     public void mouseReleased(MouseComponent mouse) {
+        this.isScrolling = false;
         endWireDraw(this);
     }
 

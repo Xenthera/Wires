@@ -12,7 +12,7 @@ public class Switch extends Node {
     public boolean isOn = false;
 
     public Switch(PApplet app, int x, int y) {
-        super(app, x, y, 30, 30, 2, 0, 1);
+        super(app, x, y, 30, 30, 5, 0, 1);
         color = app.color(255,0,255, 200);
     }
 
@@ -21,7 +21,12 @@ public class Switch extends Node {
     }
 
     public void draw() {
-        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
+        applet.noStroke();
+        applet.fill(0, 50);
+        applet.rect(this.position.x + 8, this.position.y + 8, this.size.x, this.size.y, this.radius);
+
+
+        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 255);
         applet.strokeWeight(2);
         applet.fill(this.color);
         applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);

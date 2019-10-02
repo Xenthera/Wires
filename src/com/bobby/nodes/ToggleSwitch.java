@@ -10,7 +10,7 @@ public class ToggleSwitch extends Node {
     public boolean isOn = false;
 
     public ToggleSwitch(PApplet app, int x, int y) {
-        super(app, x, y, 30, 30, 2, 0, 1);
+        super(app, x, y, 30, 30, 5, 0, 1);
         color = app.color(0,255,255, 200);
     }
 
@@ -19,7 +19,13 @@ public class ToggleSwitch extends Node {
     }
 
     public void draw() {
-        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
+
+        applet.noStroke();
+        applet.fill(0, 50);
+        applet.rect(this.position.x + 8, this.position.y + 8, this.size.x, this.size.y, this.radius);
+
+
+        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 255);
         applet.strokeWeight(2);
         applet.fill(this.color);
         applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);
@@ -37,7 +43,7 @@ public class ToggleSwitch extends Node {
         applet.rect(this.position.x + 8, this.position.y + 8, this.size.x - 16, this.size.y - 16);
         for (int i = 0; i < this.inputs.length; i++) {
             if(this.inputs[i].wires.size() > 0) {
-                applet.fill(0,255,0);
+                applet.fill(0,255,255);
                 applet.stroke(0);
             }else{
                 applet.fill(255, 100);

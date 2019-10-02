@@ -17,7 +17,7 @@ public class TestNode extends Node {
 
     public void draw() {
 
-        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
+        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 255);
         applet.strokeWeight(2);
         applet.fill(this.color);
         applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);
