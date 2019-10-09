@@ -19,7 +19,8 @@ public class NodeIO extends Component {
 
     public NodeIO(PApplet app, int x, int y, Component parent, int type) {
         super(app, x, y, parent);
-        this.layer = 1;
+        this.drawLayer = 1;
+        this.updateLayer = type == OUTPUT ? 2 : 1;
         this.type = type;
         this.wires = new ArrayList<>();
         this.parent = (Node)parent;

@@ -9,7 +9,7 @@ public class Not extends Node {
     boolean inValue = false;
 
 
-    public Not(PApplet app, int x, int y) {
+    public Not(PApplet app, int x, int y, int numInputs) {
         super(app, x, y, 40, 30, 3, 1, 1);
         color = app.color(100,100,100, 200);
         //this.tickDelay = 60;

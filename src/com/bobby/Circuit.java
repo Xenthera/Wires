@@ -2,7 +2,6 @@ package com.bobby;
 
 import com.bobby.nodes.Node;
 import processing.core.PApplet;
-import processing.core.PFont;
 import processing.core.PVector;
 import processing.event.MouseEvent;
 
@@ -12,18 +11,20 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class Circuit {
-    ArrayList<Component> sceneComponents, sceneComponentsReversed;
+    ArrayList<Component> sceneComponents, sceneComponentsReversed, sceneComponentsUpdateOrder;
     MouseComponent mouse;
     PApplet app;
 
     String[] components;
     int curComponent;
+    public int logicGateInputs = 2;
 
 
     public Circuit(PApplet app, MouseComponent mouse){
         this.mouse = mouse;
         sceneComponents = new ArrayList<>();
         sceneComponentsReversed = new ArrayList<>();
+        sceneComponentsUpdateOrder = new ArrayList<>();
         this.app = app;
         components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder", "logic.compoundLogic.BinaryToHexSSDDecoder"};
 
@@ -33,27 +34,32 @@ public class Circuit {
 
     public void addComponent(Component component){
         this.sceneComponents.add(component);
-        this.sceneComponents.sort(Comparator.comparing(Component::getLayer));
+        this.sceneComponents.sort(Comparator.comparing(Component::getDrawLayer));
         this.sceneComponentsReversed = (ArrayList<Component>) this.sceneComponents.clone();
+        this.sceneComponentsUpdateOrder = (ArrayList<Component>) this.sceneComponents.clone();
+        this.sceneComponentsUpdateOrder.sort(Comparator.comparing(Component::getUpdateLayer));
         Collections.reverse(this.sceneComponentsReversed);
+        for (Component c :
+                this.sceneComponentsUpdateOrder) {
+            //System.out.print(c instanceof MouseComponent ? "" : c + " ");
+        }
+        //System.out.println();
     }
 
     public void removeComponent(Component component){
         this.sceneComponents.remove(component);
-        this.sceneComponents.sort(Comparator.comparing(Component::getLayer));
+        this.sceneComponents.sort(Comparator.comparing(Component::getDrawLayer));
         this.sceneComponentsReversed = (ArrayList<Component>) this.sceneComponents.clone();
         Collections.reverse(this.sceneComponentsReversed);
     }
 
     public void tick(){
-        for (Component c : sceneComponents) {
+        for (Component c : sceneComponentsUpdateOrder) {
             c.tick();
         }
     }
 
     public void update(){
-        ArrayList<Component> test = new ArrayList<>();
-
         for (Component c : sceneComponents) {
 
             if(c.parent != null){
@@ -143,11 +149,21 @@ public class Circuit {
 
         if(!hit && app.mouseButton == app.CENTER){
             try{
-            Class myClass = Class.forName("com.bobby.nodes." + this.components[this.curComponent]);
-            Class[] args = {PApplet.class, int.class, int.class};
-            Component c = (Component)myClass.getDeclaredConstructor(args).newInstance(this.app, (int)mouse.position.x, (int)mouse.position.y);
-
-            this.addComponent(c);
+                String className = "com.bobby.nodes." + this.components[this.curComponent];
+                Class myClass = Class.forName(className);
+                Class[] args;
+                Component c;
+                if(className.startsWith("com.bobby.nodes.logic") && !className.startsWith("com.bobby.nodes.logic.compoundLogic")) {
+                    args = new Class[]{PApplet.class, int.class, int.class, int.class};
+                    c = (Component)myClass.getDeclaredConstructor(args).newInstance(this.app, (int)mouse.position.x, (int)mouse.position.y, this.logicGateInputs >= 2 ? this.logicGateInputs : 2);
+                }else{
+                    args = new Class[]{PApplet.class, int.class, int.class};
+                    c = (Component)myClass.getDeclaredConstructor(args).newInstance(this.app, (int)mouse.position.x, (int)mouse.position.y);
+                }
+                if(c instanceof Node){
+                    ((Node)c).position.sub(((Node)c).size.x / 2, ((Node)c).size.y / 2);
+                }
+                this.addComponent(c);
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -190,4 +206,5 @@ public class Circuit {
         }
 
     }
+
 }

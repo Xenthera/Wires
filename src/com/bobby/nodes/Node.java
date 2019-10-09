@@ -9,7 +9,7 @@ import processing.core.PVector;
 
 public class Node extends Component {
 
-    protected PVector size;
+    public PVector size;
     protected int radius;
     public NodeIO[] inputs;
     public NodeIO[] outputs;
@@ -22,6 +22,7 @@ public class Node extends Component {
         this.size = new PVector(width, height);
         this.radius = r;
         this.isGrabbable = true;
+        this.updateLayer = 0;
         this.inputs = new NodeIO[numInputs];
         this.outputs = new NodeIO[numOutputs];
         int stepSize = (int)this.size.y / (this.inputs.length + 1);

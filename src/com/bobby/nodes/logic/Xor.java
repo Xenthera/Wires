@@ -8,7 +8,7 @@ public class Xor extends Node {
     int color;
     boolean inValue = false;
 
-    public Xor(PApplet app, int x, int y) {
+    public Xor(PApplet app, int x, int y, int numInputs) {
         super(app, x, y, 45, 45, 3, 2, 1);
         color = app.color(100,255,255, 200);
     }

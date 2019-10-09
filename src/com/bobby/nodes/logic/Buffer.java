@@ -8,7 +8,7 @@ public class Buffer extends Node {
     int color;
     boolean inValue = false;
 
-    public Buffer(PApplet app, int x, int y) {
+    public Buffer(PApplet app, int x, int y, int numInputs) {
         super(app, x, y, 18, 15, 3, 1, 1);
         color = app.color(30, 200);
         this.tickDelay = 0;

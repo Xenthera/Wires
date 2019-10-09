@@ -8,15 +8,20 @@ public class And extends Node {
     int color;
     boolean inValue = false;
 
-    public And(PApplet app, int x, int y) {
-        super(app, x, y, 45, 45, 3, 2, 1);
+    public And(PApplet app, int x, int y, int numInputs) {
+        super(app, x, y, 45, 45, 3, numInputs, 1);
         color = app.color(255,255,100, 200);
         //this.tickDelay = 60;
     }
 
     public void tick(){
-        this.inValue = this.inputs[0].data > 0 && this.inputs[1].data > 0 ? true : false;
-
+        this.inValue = true;
+        for (int i = 0; i < this.inputs.length; i++) {
+            if(this.inputs[i].data < 1){
+                this.inValue = false;
+                break;
+            }
+        }
         int out = this.inValue ? 1 : 0;
 
         if(this.tickDelayCounter == 0) {

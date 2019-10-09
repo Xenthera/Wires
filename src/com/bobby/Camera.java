@@ -6,7 +6,8 @@ import processing.core.PVector;
 public class Camera {
 
 
-    int zoom = 1;
+    float zoom = 1;
+    float inverseZoom = 1/zoom;
     PVector position;
     PApplet app;
 
@@ -16,8 +17,10 @@ public class Camera {
     }
 
     public void begin(){
-        this.app.translate(-this.position.x, -this.position.y);
+        //this.app.translate(app.width / 2, app.height / 2);
         this.app.scale(this.zoom);
+        this.app.translate((-this.position.x), (-this.position.y));
+
     }
 
     public void end(){
@@ -32,8 +35,9 @@ public class Camera {
         this.position = position;
     }
 
-    public void setZoom(int zoom){
+    public void setZoom(float zoom){
         this.zoom = zoom;
+        this.inverseZoom = 1 / zoom;
     }
 
 }

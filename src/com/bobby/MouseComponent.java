@@ -34,8 +34,8 @@ public class MouseComponent extends Component {
 
         Main main = (Main)applet;
 
-        this.position.x = main.mouseX + main.camera.position.x;
-        this.position.y = main.mouseY + main.camera.position.y;
+        this.position.x = main.mouseX / main.camera.zoom + main.camera.position.x / main.camera.zoom;
+        this.position.y = main.mouseY / main.camera.zoom + main.camera.position.y / main.camera.zoom;
 
         //Calculate Mouse Delta
         this.newMouse.x = main.mouseX;
@@ -47,8 +47,8 @@ public class MouseComponent extends Component {
 
         if(isScrolling) {
             if (main.mousePressed && main.mouseButton == main.LEFT) {
-                main.camera.position.x -= this.deltaMouse.x;
-                main.camera.position.y -= this.deltaMouse.y;
+                main.camera.position.x -= this.deltaMouse.x / main.camera.zoom;
+                main.camera.position.y -= this.deltaMouse.y / main.camera.zoom;
             }
         }
     }
@@ -66,6 +66,8 @@ public class MouseComponent extends Component {
             applet.noFill();
             applet.bezier(x, y, x + 100, y, x2 - 100,y2,x2,y2);
         }
+        //applet.fill(255);
+        //applet.circle(this.position.x, this.position.y, 20);
     }
 
     @Override

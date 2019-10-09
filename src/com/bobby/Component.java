@@ -10,16 +10,24 @@ public abstract class Component {
     public PVector parentOffset;
     public Component parent;
     protected PApplet applet;
-    protected int layer = 0;
+    protected int drawLayer = 0;
+
+
+
+    protected int updateLayer = 0;
     public boolean isGrabbable = false;
 
     public Component(PApplet app, int x, int y){
         this.applet = app;
         this.position = new PVector(x, y);
-
+        this.size = new PVector(0,0);
     }
-    public int getLayer(){
-        return this.layer;
+    public int getDrawLayer(){
+        return this.drawLayer;
+    }
+
+    public int getUpdateLayer() {
+        return updateLayer;
     }
 
 //    public Component(PApplet app, int x, int y, Component parent){

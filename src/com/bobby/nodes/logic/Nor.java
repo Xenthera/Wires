@@ -8,14 +8,19 @@ public class Nor extends Node {
     int color;
     boolean inValue = false;
 
-    public Nor(PApplet app, int x, int y) {
-        super(app, x, y, 45, 45, 3, 2, 1);
+    public Nor(PApplet app, int x, int y, int numInputs) {
+        super(app, x, y, 45, 45, 3, numInputs, 1);
         color = app.color(255,100,255, 200);
     }
 
     public void tick(){
-        this.inValue = this.inputs[0].data > 0 || this.inputs[1].data > 0 ? true : false;
-
+        this.inValue = false;
+        for (int i = 0; i < this.inputs.length; i++) {
+            if(this.inputs[i].data >= 1){
+                this.inValue = true;
+                break;
+            }
+        }
         int out = this.inValue ? 0 : 1;
         if(this.tickDelayCounter == 0) {
             this.outputs[0].sendData(out);
