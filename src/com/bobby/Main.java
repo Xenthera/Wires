@@ -1,17 +1,8 @@
 package com.bobby;
 
-import com.bobby.math.HelperFunctions;
-import com.bobby.nodes.*;
-import com.bobby.nodes.logic.*;
-import com.bobby.nodes.logic.compoundLogic.FullAdder;
 import processing.core.PApplet;
 import processing.core.PVector;
-import processing.event.KeyEvent;
 import processing.event.MouseEvent;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Main extends PApplet {
 
@@ -37,9 +28,36 @@ public class Main extends PApplet {
 
         this.screenPos = new PVector(0,0);
         this.screenSize = new PVector(width - 1, height - 1);
+        thread("tickThread");
+        frame.setResizable(true);
+    }
+
+    public void tickThread(){
+        //Minecraft's update loop apparently :P
+        long lastTime = System.nanoTime();
+        double amountOfTicks = 60.0;
+        double ns = 1000000000 / amountOfTicks;
+        double delta = 0;
+        long timer = System.currentTimeMillis();
+
+        while(true) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            while(delta >= 1) {
+                masterCircuit.tick();
+                delta--;
+            }
+            if(System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+            }
+        }
+
     }
 
     public void draw(){
+        this.screenSize.x = width;
+        this.screenSize.y = height;
         //UPDATE AND TICK
         masterCircuit.update();
 
@@ -48,8 +66,8 @@ public class Main extends PApplet {
         background(0);
         fill( 60);
         noStroke();
-        for (int i = (int)(this.screenPos.x + this.camera.position.x) / 41 - 1; i <= (this.screenSize.x + this.camera.position.x) / 41 + 5; i++) {
-            for (int j = (int)(this.screenPos.y + this.camera.position.y) / 41 - 1; j <= (this.screenSize.y + this.camera.position.y) / 41 + 5; j++) {
+        for (int i = (int)(this.screenPos.x + this.camera.position.x) / 41 - 1; i <= (this.screenSize.x + this.camera.position.x) / 41 + 3; i++) {
+            for (int j = (int)(this.screenPos.y + this.camera.position.y) / 41 - 1; j <= (this.screenSize.y + this.camera.position.y) / 41 + 3; j++) {
                 rect(i * 41, j * 41, 40, 40, 3);
             }
         }

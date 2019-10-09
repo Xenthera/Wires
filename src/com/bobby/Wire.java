@@ -1,6 +1,5 @@
 package com.bobby;
 
-import com.bobby.math.HelperFunctions;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -97,12 +96,12 @@ public class Wire extends Component {
     }
 
     @Override
-    public PVector mousePressed(MouseComponent mouse, int button) {
+    public PVector mousePressed(Component mouse, int button) {
         return null;
     }
 
     @Override
-    public void mouseReleased(MouseComponent mouse) {
+    public void mouseReleased(Component mouse) {
 
     }
 

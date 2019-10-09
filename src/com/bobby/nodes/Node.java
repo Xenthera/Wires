@@ -9,7 +9,7 @@ import processing.core.PVector;
 
 public class Node extends Component {
 
-    protected PVector size;
+    public PVector size;
     protected int radius;
     public NodeIO[] inputs;
     public NodeIO[] outputs;
@@ -100,13 +100,13 @@ public class Node extends Component {
     }
 
     @Override
-    public PVector mousePressed(MouseComponent mouse, int button) {
-        this.parent = mouse;
+    public PVector mousePressed(Component mouse, int button) {
+        //this.parent = mouse;
         return new PVector(-(mouse.position.x - this.position.x), -(mouse.position.y - this.position.y));
     }
 
     @Override
-    public void mouseReleased(MouseComponent mouse) {
+    public void mouseReleased(Component mouse) {
         this.parent = null;
     }
 
