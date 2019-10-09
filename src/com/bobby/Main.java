@@ -2,6 +2,7 @@ package com.bobby;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import java.awt.*;
 
@@ -39,13 +40,32 @@ public class Main extends PApplet {
         this.camera = new Camera(this);
         this.camera.setZoom(1f);
         this.screenPos = new PVector(0,0);
-        this.screenSize = new PVector(width, height);
-        surface.setResizable(true);
+        this.screenSize = new PVector(width - 1, height - 1);
+        thread("tickThread");
+        frame.setResizable(true);
+    }
 
-        p1 = new PVector(100, 100);
-        p4 = new PVector(800, 400);
-        p2 = new PVector(p1.x + 100, p1.y);
-        p3 = new PVector(p4.x - 100, p4.y);
+    public void tickThread(){
+        //Minecraft's update loop apparently :P
+        long lastTime = System.nanoTime();
+        double amountOfTicks = 60.0;
+        double ns = 1000000000 / amountOfTicks;
+        double delta = 0;
+        long timer = System.currentTimeMillis();
+
+        while(true) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            while(delta >= 1) {
+                masterCircuit.tick();
+                delta--;
+            }
+            if(System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+            }
+        }
+
     }
     public void draw_alternate(){
         float t = millis();
@@ -130,15 +150,14 @@ public class Main extends PApplet {
         }
 
 
+        this.screenSize.x = width;
+        this.screenSize.y = height;
         //UPDATE AND TICK
         masterCircuit.update();
 
-
         //DRAW
-        this.screenSize.x = width;
-        this.screenSize.y = height;
         this.camera.begin();
-
+        background(0);
         fill( 60);
         noStroke();
 
@@ -167,7 +186,10 @@ public class Main extends PApplet {
 
         //line(mouseX, mouseY - 5, mouseX, mouseY + 5);
 
-
+        noFill();
+        strokeWeight(1);
+        stroke(0,255,0);
+        rect(this.screenPos.x, this.screenPos.y, this.screenSize.x, this.screenSize.y);
     }
 
     @Override
@@ -184,8 +206,6 @@ public class Main extends PApplet {
 
     public void mouseWheel(MouseEvent event){
         masterCircuit.mouseWheel(event);
-
-        //this.camera.zoom += event.getCount() * 0.1;
     }
 
     public void keyPressed(){

@@ -28,7 +28,7 @@ public class Circuit {
         this.app = app;
         components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder", "logic.compoundLogic.BinaryToHexSSDDecoder"};
 
-        int curComponent = 0;
+        curComponent = 0;
 
     }
 
@@ -61,12 +61,10 @@ public class Circuit {
 
     public void update(){
         for (Component c : sceneComponents) {
-
             if(c.parent != null){
                 c.position.set(PVector.add(c.parent.position, c.parentOffset));
             }
             c.update();
-            c.tick();
         }
     }
 
@@ -117,12 +115,18 @@ public class Circuit {
     }
 
     public void mousePressed(int mouseX, int mouseY) {
-        mouse.mousePressed(mouse, app.mouseButton);
+        //mouse.mousePressed(mouse, app.mouseButton);
         boolean hit = false;
         for (Component c : sceneComponentsReversed) {
-            if(c.isGrabbable) {
+            if(app.keyPressed && app.keyCode == 16 && c instanceof Node){
+                if(c.isHovered(mouseX, mouseY)) {
+                    mouse.mousePressed(c, app.mouseButton);
+                    break;
+                }
+            }else if(c.isGrabbable) {
                 if (c.isHovered(mouseX, mouseY)) {
                     mouse.attachedComponent = c;
+                    c.parent = mouse;
                     c.parentOffset = c.mousePressed(mouse, app.mouseButton);
                     hit = true;
                     if(app.mouseButton == app.CENTER){
@@ -133,7 +137,7 @@ public class Circuit {
                     break;
                 }
             }else if(c.isHovered(mouseX, mouseY)) {
-                c.mousePressed(mouse, app.mouseButton);
+                mouse.mousePressed(c, app.mouseButton);
                 hit = true;
                 if(app.mouseButton == app.CENTER){
                     if(c instanceof Wire){
@@ -177,7 +181,7 @@ public class Circuit {
                 e.printStackTrace();
             }
 
-        }else if(!hit && app.mouseButton == app.LEFT){
+        }else if(!hit && app.mouseButton == app.RIGHT){
             mouse.isScrolling = true;
         }
 
@@ -191,7 +195,7 @@ public class Circuit {
 
     public void mouseReleased(int mouseX, int mouseY) {
 
-        mouse.mouseReleased(mouse);
+
 
         if(mouse.attachedComponent != null) {
             mouse.attachedComponent.mouseReleased(mouse);
@@ -199,12 +203,13 @@ public class Circuit {
         }else{
             for (Component c : sceneComponentsReversed) {
                 if(c.isHovered(mouseX, mouseY)) {
-                    c.mouseReleased(mouse);
+                    mouse.mouseReleased(c);
                     break;
                 }
             }
         }
 
+        mouse.mouseReleased(mouse);
     }
 
 }

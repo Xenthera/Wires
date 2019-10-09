@@ -40,4 +40,12 @@ public class Camera {
         this.inverseZoom = 1 / zoom;
     }
 
+    public PVector screenToWorld(int x, int y){
+        return new PVector(0,0);
+    }
+
+    public PVector screenToWorld(PVector p){
+        return this.screenToWorld((int)p.x, (int)p.y);
+    }
+
 }

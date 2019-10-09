@@ -55,8 +55,8 @@ public abstract class Component {
     //Returns true if the mouse is currently hovering over the object (you must define what is considered hovering here)
     public abstract boolean isHovered(int mouseX, int mouseY);
     //Called when mouse is clicked on this object, should return the offset of the mouse, and the object position
-    public abstract PVector mousePressed(MouseComponent mouse, int button);
+    public abstract PVector mousePressed(Component c, int button);
     //Called when the mouse is released and detaches the object from the mouse
-    public abstract void mouseReleased(MouseComponent mouse);
+    public abstract void mouseReleased(Component c);
 
 }

@@ -1,5 +1,6 @@
 package com.bobby.nodes;
 
+import com.bobby.Component;
 import com.bobby.MouseComponent;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -64,11 +65,8 @@ public class ToggleSwitch extends Node {
         }
     }
 
-    public PVector mousePressed(MouseComponent mouse, int button){
-        if(button == applet.LEFT) {
-            this.parent = mouse;
-
-        }else if(button == applet.RIGHT){
+    public PVector mousePressed(Component mouse, int button){
+        if(button == applet.RIGHT){
             this.isOn = !this.isOn;
         }
         return new PVector(-(mouse.position.x - this.position.x), -(mouse.position.y - this.position.y));
