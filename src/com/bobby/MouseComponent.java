@@ -80,14 +80,18 @@ public class MouseComponent extends Component {
             int y2 = (int)this.position.y;
             int dis = applet.abs(x - x2);
 
-            applet.strokeWeight(5);
+            applet.strokeWeight(12);
             applet.stroke(0, 0, 0, 255);
             applet.noFill();
             applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
 
             applet.strokeWeight(2);
             applet.stroke(255, 0, 100, 255);
+            applet.bezier(x, y-3, x + dis/2, y-3, x2 - dis/2,y2-3,x2,y2-3);
+            applet.stroke(0, 255, 100, 255);
             applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            applet.stroke(0, 100, 255, 255);
+            applet.bezier(x, y + 3, x + dis/2, y + 3, x2 - dis/2,y2 + 3,x2,y2 + 3);
 
         }
     }
@@ -157,7 +161,7 @@ public class MouseComponent extends Component {
     }
 
     public void endWireDraw(Component c){
-        if((c != this) && (this.isDrawingWire)){
+        if((c != this) && (this.isDrawingWire) && (c instanceof NodeIO)){
             this.destination = (NodeIO) c;
             if(((NodeIO) c).type != this.origin.type && ((NodeIO) c).parent != this.origin.parent) {
 

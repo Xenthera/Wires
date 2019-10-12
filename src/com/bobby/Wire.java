@@ -28,10 +28,12 @@ public class Wire extends Component {
 
     @Override
     public void tick() {
-        if(origin.data != 0){
-            this.hasData = true;
-        }else{
-            this.hasData = false;
+        if(origin != null) {
+            if (origin.data != 0) {
+                this.hasData = true;
+            } else {
+                this.hasData = false;
+            }
         }
     }
 
@@ -95,19 +97,15 @@ public class Wire extends Component {
         float[] pos = this.bboxBezierSimple(this.origin.position, p1, p2, this.destination.position);
 //        applet.noFill();
 //        applet.stroke(255,255,0);
-//        applet.rect(pos[0],pos[1],pos[2],pos[3]);
+//        applet.rect(pos[0] - 5,pos[1] - 5,pos[2] + 10,pos[3] + 10);
         float r = Float.MAX_VALUE;
-        if(mouseX >= pos[0]  && mouseX <= pos[2] + pos[0]  && mouseY >= pos[1]  && mouseY <= pos[3] + pos[1]) {
+        if(mouseX >= pos[0] - 5 && mouseX <= pos[2] + pos[0] + 10  && mouseY >= pos[1] - 5  && mouseY <= pos[3] + pos[1] + 10) {
             pos = bboxBezier(this.origin.position, p1, p2, this.destination.position);
-//            applet.rect(pos[0],pos[1],pos[2],pos[3]);
-            if (mouseX >= pos[0] && mouseX <= pos[2] + pos[0] && mouseY >= pos[1] && mouseY <= pos[3] + pos[1]) {
+//            applet.stroke(255);
+//            applet.rect(pos[0] - 5,pos[1] - 5,pos[2] + 10,pos[3] + 10);
+            if (mouseX >= pos[0] - 5 && mouseX <= pos[2] + pos[0] + 10  && mouseY >= pos[1] - 5  && mouseY <= pos[3] + pos[1] + 10) {
                 float dis2 = PVector.dist(this.origin.position, this.destination.position);
-
                 r = (float) getClosestPointToCubicBezier(mouseX, mouseY, (int) (dis2 + 200) / 20, this.origin.position.x, this.origin.position.y, p1.x, p1.y, p2.x, p2.y, this.destination.position.x, this.destination.position.y);
-//
-//                applet.stroke(150);
-//                applet.circle(mouseX, mouseY, r * 2);
-//                applet.stroke(255, 200, 100);
             }
         }
 

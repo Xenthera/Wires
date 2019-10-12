@@ -18,12 +18,7 @@ public class Main extends PApplet {
     int backgroundCornerRadius = 6;
     int backgroundGap = 1;
 
-    boolean debug = true;
-
-    boolean test = true;
-    PVector p1;
-    PVector p2;
-    PVector p3, p4;
+    boolean debug = false;
 
     public static void main(String[] args) {
         PApplet.main("com.bobby.Main");
@@ -42,7 +37,7 @@ public class Main extends PApplet {
         this.screenPos = new PVector(0,0);
         this.screenSize = new PVector(width - 1, height - 1);
         thread("tickThread");
-        frame.setResizable(true);
+        surface.setResizable(true);
     }
 
     public void tickThread(){
@@ -69,10 +64,7 @@ public class Main extends PApplet {
     }
     public void draw_alternate(){
         float t = millis();
-        p2.x = cos(t * 0.001f) * 200 + p1.x;
-        p2.y = sin(t * 0.001f) * 200 + p1.y;
-        p3.x = sin(t * 0.001f) * 200 + p4.x;
-        p3.y = cos(t * 0.001f) * 200 + p4.y;
+
 
         background(0);
         textAlign(LEFT, TOP);
@@ -184,12 +176,6 @@ public class Main extends PApplet {
         text(frameRate, 5, 45);
         text("Logic gate inputs: " + this.masterCircuit.logicGateInputs, 5, 65);
 
-        //line(mouseX, mouseY - 5, mouseX, mouseY + 5);
-
-        noFill();
-        strokeWeight(1);
-        stroke(0,255,0);
-        rect(this.screenPos.x, this.screenPos.y, this.screenSize.x, this.screenSize.y);
     }
 
     @Override

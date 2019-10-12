@@ -125,8 +125,10 @@ public class Circuit {
                 }
             }else if(c.isGrabbable) {
                 if (c.isHovered(mouseX, mouseY)) {
-                    mouse.attachedComponent = c;
-                    c.parent = mouse;
+                    if(app.mouseButton == app.LEFT) {
+                        mouse.attachedComponent = c;
+                        c.parent = mouse;
+                    }
                     c.parentOffset = c.mousePressed(mouse, app.mouseButton);
                     hit = true;
                     if(app.mouseButton == app.CENTER){
