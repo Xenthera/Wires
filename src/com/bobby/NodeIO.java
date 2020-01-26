@@ -83,6 +83,11 @@ public class NodeIO extends Component {
 
     }
 
+    @Override
+    public void remove() {
+
+    }
+
     public void sendData(int data){
         if(this.type == OUTPUT && wires.size() > 0){
             this.data = data;

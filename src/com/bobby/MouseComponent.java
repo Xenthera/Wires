@@ -133,6 +133,11 @@ public class MouseComponent extends Component {
         endMultiWiredraw(c);
     }
 
+    @Override
+    public void remove() {
+
+    }
+
     public void beginMultiwireDraw(Component c){
         if(((Node) c).outputs.length  > 0) {
             this.nodeOrigin = (Node) c;

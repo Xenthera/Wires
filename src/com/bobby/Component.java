@@ -59,4 +59,6 @@ public abstract class Component {
     //Called when the mouse is released and detaches the object from the mouse
     public abstract void mouseReleased(Component c);
 
+    public abstract void remove();
+
 }

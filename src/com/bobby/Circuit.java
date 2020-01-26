@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 
 public class Circuit {
     ArrayList<Component> sceneComponents, sceneComponentsReversed, sceneComponentsUpdateOrder;
@@ -26,7 +27,7 @@ public class Circuit {
         sceneComponentsReversed = new ArrayList<>();
         sceneComponentsUpdateOrder = new ArrayList<>();
         this.app = app;
-        components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder", "logic.compoundLogic.BinaryToHexSSDDecoder"};
+        components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder", "logic.compoundLogic.BinaryToHexSSDDecoder", "RaspberryPi", "RaspberryPiWireless"};
 
         curComponent = 0;
 
@@ -47,6 +48,7 @@ public class Circuit {
     }
 
     public void removeComponent(Component component){
+        component.remove();
         this.sceneComponents.remove(component);
         this.sceneComponents.sort(Comparator.comparing(Component::getDrawLayer));
         this.sceneComponentsReversed = (ArrayList<Component>) this.sceneComponents.clone();
@@ -55,7 +57,11 @@ public class Circuit {
 
     public void tick(){
         for (Component c : sceneComponentsUpdateOrder) {
-            c.tick();
+            try {
+                c.tick();
+            }catch (ConcurrentModificationException e){
+                //Oh well keep going.
+            }
         }
     }
 
@@ -70,18 +76,20 @@ public class Circuit {
 
     public void draw(){
 
-        for (Component c : sceneComponentsReversed) {
-            if(c.isHovered((int)mouse.position.x, (int)mouse.position.y)){
-                c.hover();
-                break;
-            }
-        }
+
         Main temp = (Main)app;
         for (Component c : sceneComponents) {
             if((c.position.x + c.getSize().x) - temp.camera.position.x >= temp.screenPos.x && (c.position.y + c.getSize().y) - temp.camera.position.y >= temp.screenPos.y) {
                 if(c.position.x - temp.camera.position.x <= temp.screenPos.x + temp.screenSize.x && c.position.y - temp.camera.position.y <= temp.screenPos.y + temp.screenSize.y) {
                     c.draw();
                 }
+            }
+        }
+
+        for (Component c : sceneComponentsReversed) {
+            if(c.isHovered((int)mouse.position.x, (int)mouse.position.y)){
+                c.hover();
+                break;
             }
         }
 
@@ -92,13 +100,15 @@ public class Circuit {
 
         for(int i = ref.inputs.length - 1; i >= 0; i--){
             NodeIO nodeio = node.inputs[i];
-            for(int j = nodeio.wires.size() - 1; j >= 0; j--){
-                Wire wire = nodeio.wires.get(j);
-                nodeio.removeWire(wire);
-                wire.destroy();
-                this.removeComponent(wire);
+            if(nodeio != null) {
+                for (int j = nodeio.wires.size() - 1; j >= 0; j--) {
+                    Wire wire = nodeio.wires.get(j);
+                    nodeio.removeWire(wire);
+                    wire.destroy();
+                    this.removeComponent(wire);
+                }
+                this.removeComponent(nodeio);
             }
-            this.removeComponent(nodeio);
         }
 
         for(int i = ref.outputs.length - 1; i >= 0; i--){

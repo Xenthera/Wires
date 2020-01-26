@@ -76,10 +76,10 @@ public class Wire extends Component {
         applet.noFill();
         if(hasData) {
             applet.stroke(0);
-            applet.strokeWeight(7);
+            applet.strokeWeight(3);
             applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
         }else{
-            applet.strokeWeight(7);
+            applet.strokeWeight(3);
             applet.stroke(255);
             applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
         }
@@ -124,6 +124,10 @@ public class Wire extends Component {
 
     public void sendValue(int value){
         this.destination.receiveData(value);
+    }
+
+    public void remove(){
+
     }
 
     public void destroy(){

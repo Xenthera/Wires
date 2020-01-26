@@ -1,6 +1,8 @@
 package com.bobby;
 
 import processing.core.PApplet;
+import processing.core.PImage;
+import processing.core.PShape;
 import processing.core.PVector;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
@@ -17,6 +19,8 @@ public class Main extends PApplet {
     int backgroundPatternSize = 128;
     int backgroundCornerRadius = 6;
     int backgroundGap = 1;
+
+    PImage rPi;
 
     boolean debug = false;
 
@@ -38,6 +42,8 @@ public class Main extends PApplet {
         this.screenSize = new PVector(width - 1, height - 1);
         thread("tickThread");
         surface.setResizable(true);
+        rPi = loadImage("RPI.png");
+        textSize(12);
     }
 
     public void tickThread(){
@@ -66,15 +72,15 @@ public class Main extends PApplet {
         float t = millis();
 
 
-        background(0);
+        background(255);
         textAlign(LEFT, TOP);
         fill(255, 200,0);
         text("[DEBUG]", 5, 5);
-        noFill();
 
-        stroke(100,0,200);
-        fill(255);
-        circle(mouseX, mouseY, 20);
+
+
+        fill(255,0,0);
+        image(rPi, mouseX, mouseY);
 
 
 
@@ -153,7 +159,7 @@ public class Main extends PApplet {
         fill( 60);
         noStroke();
 
-        background(0);
+        background(50);
         for (int i = (int) (this.screenPos.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) - 1; i <= (this.screenSize.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) + 1; i++) {
             for (int j = (int) (this.screenPos.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) - 1; j <= (this.screenSize.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) + 1; j++) {
                 rect(i * (backgroundPatternSize + backgroundGap), j * (backgroundPatternSize + backgroundGap), (backgroundPatternSize), (backgroundPatternSize), backgroundCornerRadius);

@@ -111,6 +111,11 @@ public class Node extends Component {
         this.parent = null;
     }
 
+    @Override
+    public void remove() {
+
+    }
+
     public void scheduleTick(int delay){
         //number of ticks until the gate outputs
         this.tickDelayCounter = delay;
