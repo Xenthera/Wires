@@ -8,6 +8,7 @@ Heavily inspired by wiremod.
 
 > Currently a work in progress.
 
+<img src="https://i.imgur.com/PTIImvA.png">
 
 Version 0.0.2
 ---
