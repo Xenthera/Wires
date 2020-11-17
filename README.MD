@@ -1,5 +1,7 @@
-Wires
+Wires (LibGDX Branch)
 =====
+
+<img src="https://libgdx.badlogicgames.com/img/logo.png">
 
 A program written in Java using [processing](https://processing.org/) for rendering. 
 Heavily inspired by wiremod.
