@@ -201,6 +201,7 @@ public class Main extends PApplet {
     }
 
     public void keyPressed(){
+
         if(keyCode == 39) {
             this.masterCircuit.logicGateInputs += 1;
         }else if(keyCode == 37){
