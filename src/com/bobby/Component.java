@@ -12,15 +12,25 @@ public abstract class Component {
     protected PApplet applet;
     protected int drawLayer = 0;
 
-
-
     protected int updateLayer = 0;
     public boolean isGrabbable = false;
+
+    public int ID;
 
     public Component(PApplet app, int x, int y){
         this.applet = app;
         this.position = new PVector(x, y);
         this.size = new PVector(0,0);
+
+        int id;
+        while(true){
+            id = (int)(Math.random() * 100000);
+            if(((Main)app).RegisterID(id)){
+                this.ID = id;
+                break;
+            }
+        }
+
     }
     public int getDrawLayer(){
         return this.drawLayer;

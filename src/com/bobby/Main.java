@@ -1,12 +1,18 @@
 package com.bobby;
 
+import com.bobby.nodes.Node;
+import com.bobby.serializables.SerializableComponent;
+import com.bobby.serializables.SerializableWire;
+
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.core.PShape;
 import processing.core.PVector;
-import processing.event.KeyEvent;
 import processing.event.MouseEvent;
-import java.awt.*;
+
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Main extends PApplet {
@@ -19,6 +25,8 @@ public class Main extends PApplet {
     int backgroundPatternSize = 128;
     int backgroundCornerRadius = 6;
     int backgroundGap = 1;
+
+    ArrayList<Integer> IDs;
 
     PImage rPi;
 
@@ -33,6 +41,9 @@ public class Main extends PApplet {
     }
 
     public void setup(){
+
+        IDs = new ArrayList<>();
+
         mouseComponent = new MouseComponent(this, 0, 0);
         masterCircuit = new Circuit(this, mouseComponent);
         masterCircuit.addComponent(mouseComponent);
@@ -44,6 +55,17 @@ public class Main extends PApplet {
         surface.setResizable(true);
         rPi = loadImage("RPI.png");
         textSize(12);
+
+
+    }
+
+    public boolean RegisterID(int ID){
+        if(!IDs.contains(ID)){
+            System.out.println("Registering ID: " + ID);
+            IDs.add(ID);
+            return true;
+        }
+        return false;
     }
 
     public void tickThread(){
@@ -181,6 +203,8 @@ public class Main extends PApplet {
         text("Mouse Position: " + mouseXPos / 41 + ", " + mouseYPos / 41, 5, 25);
         text(frameRate, 5, 45);
         text("Logic gate inputs: " + this.masterCircuit.logicGateInputs, 5, 65);
+        fill(255,255,255);
+        text("Write circuit with W, open it back up with O", 5, 85);
 
     }
 
@@ -201,12 +225,161 @@ public class Main extends PApplet {
     }
 
     public void keyPressed(){
+
+        System.out.println("Keycode: " + keyCode);
         if(keyCode == 39) {
             this.masterCircuit.logicGateInputs += 1;
         }else if(keyCode == 37){
             this.masterCircuit.logicGateInputs -= 1;
         }else if(keyCode == 68){
             this.debug = !this.debug;
+        }else if(keyCode == 87){
+            writeCircuitToFile(masterCircuit);
+        }else if(keyCode == 79){
+            Circuit c = readCircuitFromFile("testfile.tf");
+            if (c != null) {
+                masterCircuit = c;
+            }
         }
     }
+
+    public void writeCircuitToFile(Circuit circuit){
+        ArrayList<SerializableComponent> componentList = new ArrayList<>();
+        for (Component c : circuit.sceneComponents) {
+
+            if(c instanceof Wire){
+                Wire w = (Wire)c;
+
+                componentList.add(new SerializableWire(c.getClass().toString(), w.ID, (int)c.position.x, (int)c.position.y,
+                        w.origin.parent.ID, indexOf(w.origin.parent.outputs, w.origin),
+                        w.destination.parent.ID, indexOf(w.destination.parent.inputs, w.destination)));
+            }else if(c instanceof Node){
+
+
+                componentList.add(new SerializableComponent(c.getClass().toString(), c.ID, (int) c.position.x, (int) c.position.y));
+            }
+        }
+
+        try {
+            FileOutputStream f = new FileOutputStream("testfile.tf");
+            ObjectOutputStream os = new ObjectOutputStream(f);
+            os.writeObject(componentList);
+            f.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public <T> int indexOf(T[] arr, T obj){
+        for (int i = 0; i < arr.length; i++){
+            if(arr[i].equals(obj)){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public Circuit readCircuitFromFile(String path) {
+
+        Circuit cir = new Circuit(this, mouseComponent);
+
+        HashMap<String, Component> map = new HashMap<>();
+
+        try {
+            FileInputStream f = new FileInputStream(path);
+            ObjectInputStream os = new ObjectInputStream(f);
+            ArrayList<SerializableComponent> components = (ArrayList<SerializableComponent>) os.readObject();
+
+            ArrayList<SerializableWire> wires = new ArrayList<>();
+
+            for (SerializableComponent c: components) {
+                if(c instanceof SerializableWire){
+                    wires.add((SerializableWire)c);
+                }
+            }
+
+            if (components != null) {
+                for (SerializableComponent s : components) {
+
+                    String className = s.name.split(" ")[1];
+
+                    Class myClass;
+
+                    System.out.println(className);
+
+                    if(!className.contains("Mouse") && !className.contains("NodeIO") && !className.contains("Wire")) {
+
+                        myClass = Class.forName(className);
+                        Class[] args;
+                        Component c;
+
+                        if (className.startsWith("com.bobby.nodes.logic") && !className.startsWith("com.bobby.nodes.logic.compoundLogic")) {
+                            args = new Class[]{PApplet.class, int.class, int.class, int.class};
+                            c = (Component) myClass.getDeclaredConstructor(args).newInstance(this, s.x, s.y, 2);
+                            c.ID = s.ID;
+
+
+                        } else {
+
+                            args = new Class[]{PApplet.class, int.class, int.class};
+                            c = (Component) myClass.getDeclaredConstructor(args).newInstance(this, s.x, s.y);
+                            c.ID = s.ID;
+
+
+                        }
+
+                        if(c instanceof Node){
+                            for (NodeIO io : ((Node)c).inputs) {
+                                System.out.println("NODEIO: " + io);
+                                cir.addComponent(io);
+                            }
+                            for (NodeIO io : ((Node)c).outputs) {
+                                cir.addComponent(io);
+                            }
+                        }
+
+
+                        if (c != null) {
+                            cir.addComponent(c);
+                            map.put(String.valueOf(c.ID), c);
+                        }
+                    }
+                }
+                cir.addComponent(mouseComponent);
+            }
+            //Now we'll add the wires last
+            for (SerializableWire w : wires){
+                Node origin = (Node) map.get(String.valueOf(w.OriginID));
+                Node destination = (Node) map.get(String.valueOf(w.DestinationID));
+
+                Wire wire = new Wire(this, origin.outputs[w.OriginNode], destination.inputs[w.DestinationNode]);
+                wire.hasData = w.HasData;
+                cir.addComponent(wire);
+            }
+
+
+        return cir;
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

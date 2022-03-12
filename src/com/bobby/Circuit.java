@@ -163,7 +163,7 @@ public class Circuit {
 
         }
 
-        if(!hit && app.mouseButton == app.CENTER){
+        if(!hit && app.mouseButton == app.LEFT){
             try{
                 String className = "com.bobby.nodes." + this.components[this.curComponent];
                 Class myClass = Class.forName(className);
