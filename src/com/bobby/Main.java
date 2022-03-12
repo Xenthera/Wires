@@ -3,7 +3,7 @@ package com.bobby;
 import com.bobby.nodes.Node;
 import com.bobby.serializables.SerializableComponent;
 import com.bobby.serializables.SerializableWire;
-import org.jetbrains.annotations.NotNull;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
@@ -272,7 +272,7 @@ public class Main extends PApplet {
         }
     }
 
-    public <T> int indexOf(@NotNull T[] arr, T obj){
+    public <T> int indexOf(T[] arr, T obj){
         for (int i = 0; i < arr.length; i++){
             if(arr[i].equals(obj)){
                 return i;
