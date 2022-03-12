@@ -12,8 +12,11 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
 public class Circuit {
+
+    public ArrayList<Integer> IDs;
+
     ArrayList<Component> sceneComponents, sceneComponentsReversed, sceneComponentsUpdateOrder;
-    MouseComponent mouse;
+    public MouseComponent mouse;
     PApplet app;
 
     String[] components;
@@ -21,8 +24,10 @@ public class Circuit {
     public int logicGateInputs = 2;
 
 
-    public Circuit(PApplet app, MouseComponent mouse){
-        this.mouse = mouse;
+    public Circuit(PApplet app){
+
+        IDs = new ArrayList<>();
+
         sceneComponents = new ArrayList<>();
         sceneComponentsReversed = new ArrayList<>();
         sceneComponentsUpdateOrder = new ArrayList<>();
@@ -31,6 +36,15 @@ public class Circuit {
 
         curComponent = 0;
 
+    }
+
+    public boolean RegisterID(int ID){
+        if(!IDs.contains(ID)){
+            System.out.println("Registering ID: " + ID);
+            IDs.add(ID);
+            return true;
+        }
+        return false;
     }
 
     public void addComponent(Component component){

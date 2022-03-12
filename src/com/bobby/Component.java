@@ -25,7 +25,7 @@ public abstract class Component {
         int id;
         while(true){
             id = (int)(Math.random() * 100000);
-            if(((Main)app).RegisterID(id)){
+            if(((Main)app).masterCircuit.RegisterID(id)){
                 this.ID = id;
                 break;
             }

@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 public class Main extends PApplet {
 
-    MouseComponent mouseComponent;
+    public MouseComponent mouseComponent;
     public Circuit masterCircuit;
     public Camera camera;
     PVector screenPos;
@@ -42,10 +42,12 @@ public class Main extends PApplet {
 
     public void setup(){
 
-        IDs = new ArrayList<>();
 
+
+
+        masterCircuit = new Circuit(this);
         mouseComponent = new MouseComponent(this, 0, 0);
-        masterCircuit = new Circuit(this, mouseComponent);
+        masterCircuit.mouse = mouseComponent;
         masterCircuit.addComponent(mouseComponent);
         this.camera = new Camera(this);
         this.camera.setZoom(1f);
@@ -59,14 +61,7 @@ public class Main extends PApplet {
 
     }
 
-    public boolean RegisterID(int ID){
-        if(!IDs.contains(ID)){
-            System.out.println("Registering ID: " + ID);
-            IDs.add(ID);
-            return true;
-        }
-        return false;
-    }
+
 
     public void tickThread(){
         //Minecraft's update loop apparently :P
@@ -278,13 +273,13 @@ public class Main extends PApplet {
                 return i;
             }
         }
-
         return -1;
     }
 
     public Circuit readCircuitFromFile(String path) {
 
-        Circuit cir = new Circuit(this, mouseComponent);
+        Circuit cir = new Circuit(this);
+        cir.mouse = mouseComponent;
 
         HashMap<String, Component> map = new HashMap<>();
 
@@ -316,20 +311,16 @@ public class Main extends PApplet {
                         Class[] args;
                         Component c;
 
-                        if (className.startsWith("com.bobby.nodes.logic") && !className.startsWith("com.bobby.nodes.logic.compoundLogic")) {
+                        if (className.startsWith("com.bobby.nodes.logic")) {
                             args = new Class[]{PApplet.class, int.class, int.class, int.class};
                             c = (Component) myClass.getDeclaredConstructor(args).newInstance(this, s.x, s.y, 2);
-                            c.ID = s.ID;
-
-
                         } else {
 
                             args = new Class[]{PApplet.class, int.class, int.class};
                             c = (Component) myClass.getDeclaredConstructor(args).newInstance(this, s.x, s.y);
-                            c.ID = s.ID;
-
-
                         }
+
+                        c.ID = s.ID;
 
                         if(c instanceof Node){
                             for (NodeIO io : ((Node)c).inputs) {
@@ -340,7 +331,6 @@ public class Main extends PApplet {
                                 cir.addComponent(io);
                             }
                         }
-
 
                         if (c != null) {
                             cir.addComponent(c);
