@@ -62,9 +62,11 @@ public class Wire extends Component {
         }else{
             applet.stroke(0,0,0);
         }
-        //applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+
 
         if(((Main)applet).drawWires)
+            applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+        else
             applet.line(x,y, x2, y2);
     }
 
@@ -79,13 +81,13 @@ public class Wire extends Component {
         if(hasData) {
             applet.stroke(0);
             applet.strokeWeight(3);
-            //applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
-            applet.line(x,y, x2, y2);
+            applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            //applet.line(x,y, x2, y2);
         }else{
             applet.strokeWeight(3);
             applet.stroke(255);
-            //applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
-            applet.line(x,y, x2, y2);
+            applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            //applet.line(x,y, x2, y2);
         }
     }
 

@@ -4,6 +4,8 @@ import com.bobby.nodes.Node;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.util.ArrayList;
+
 public class MouseComponent extends Component {
 
     Component attachedComponent;
@@ -19,12 +21,15 @@ public class MouseComponent extends Component {
 
     PVector selectOrigin;
 
+    ArrayList<Component> selectedComponents;
+
     public MouseComponent(PApplet app, int x, int y){
         super(app, x, y);
         this.deltaMouse = new PVector(0,0);
         this.newMouse = new PVector(x,y);
         this.oldMouse = new PVector(x,y);
         this.size = new PVector(0,0);
+        selectedComponents = new ArrayList<>();
     }
 
     @Override
@@ -74,11 +79,36 @@ public class MouseComponent extends Component {
 
     }
 
+    public void clearSelection(){
+        this.selectedComponents = new ArrayList<>();
+    }
+
     private void selectBegin(){
         selectOrigin = new PVector(position.x, position.y);
     }
 
     private void selectEnd(){
+        PVector p1 = new PVector(selectOrigin.x, selectOrigin.y);
+        PVector p2 = new PVector(position.x, position.y);
+
+        if(p1.x > p2.x){
+            p2.x = p1.x;
+            p1.x = position.x;
+        }
+
+        if(p1.y > p2.y){
+            p2.y = p1.y;
+            p1.y = position.y;
+        }
+
+        for (Component c : ((Main)applet).masterCircuit.sceneComponents) {
+            if(c.position.x >= p1.x && c.position.x <= p2.x){
+                if(c.position.y >= p1.y && c.position.y <= p2.y){
+                    if(c instanceof Node)
+                    selectedComponents.add(c);
+                }
+            }
+        }
         System.out.println("Ended selecting");
     }
 
@@ -123,6 +153,13 @@ public class MouseComponent extends Component {
 
         }
 
+        if(selectedComponents.size() > 0){
+            for (Component c :
+                    selectedComponents) {
+                c.hover();
+            }
+        }
+
         if(_selecting){
             applet.stroke(100,255,220, 100);
             applet.strokeWeight(2);
@@ -131,20 +168,35 @@ public class MouseComponent extends Component {
 
             applet.fill(255,0,0);
             applet.circle(selectOrigin.x, selectOrigin.y, 20);
-
+            applet.fill(0,255,0);
             applet.circle(position.x, position.y, 20);
 
-            applet.fill(255,255,0);
             PVector p1 = new PVector(selectOrigin.x, selectOrigin.y);
-            applet.fill(0,0,255);
             PVector p2 = new PVector(position.x, position.y);
+
+            if(p1.x > p2.x){
+                p2.x = p1.x;
+                p1.x = position.x;
+            }
+
+            if(p1.y > p2.y){
+                p2.y = p1.y;
+                p1.y = position.y;
+            }
+
+            applet.line(p1.x, p1.y, p2.x, p2.y);
+
+            applet.fill(255,255,0);
+            applet.circle(p1.x, p1.y, 20);
+            applet.fill(0,0,255);
+            applet.circle(p2.x, p2.y, 20);
 
 
             for (Component c : ((Main)applet).masterCircuit.sceneComponents) {
-                if(c.position.x >= selectOrigin.x && c.position.x <= position.x){
-                    if(c.position.y >= selectOrigin.y && c.position.y <= position.y){
+                if(c.position.x >= p1.x && c.position.x <= p2.x){
+                    if(c.position.y >= p1.y && c.position.y <= p2.y){
+                        if(c instanceof Node)
                         c.hover();
-                        applet.circle(c.position.x, c.position.y, 5);
                     }
                 }
             }

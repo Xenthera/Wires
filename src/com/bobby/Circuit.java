@@ -148,7 +148,15 @@ public class Circuit {
                     break;
                 }
             }else if(c.isGrabbable) {
-                if (c.isHovered(mouseX, mouseY)) {
+                if(mouse.selectedComponents.size() > 0 && c.isHovered(mouseX, mouseY)){
+                    for (Component com :
+                            mouse.selectedComponents) {
+                        com.parent = mouse;
+                        com.parentOffset = com.mousePressed(mouse, app.mouseButton);
+                    }
+                    hit = true;
+                }
+                else if (c.isHovered(mouseX, mouseY)) {
                     if(app.mouseButton == app.LEFT) {
                         mouse.attachedComponent = c;
                         c.parent = mouse;
@@ -178,43 +186,50 @@ public class Circuit {
         }
 
         if(!hit && app.mouseButton == app.LEFT){
-            try{
-                String className = "com.bobby.nodes." + this.components[this.curComponent];
-                Class myClass = Class.forName(className);
-                Class[] args;
-                Component c;
-                if(className.startsWith("com.bobby.nodes.logic") && !className.startsWith("com.bobby.nodes.logic.compoundLogic")) {
-                    args = new Class[]{PApplet.class, int.class, int.class, int.class};
-                    c = (Component)myClass.getDeclaredConstructor(args).newInstance(this.app, (int)mouse.position.x, (int)mouse.position.y, this.logicGateInputs >= 2 ? this.logicGateInputs : 2);
-                }else{
-                    args = new Class[]{PApplet.class, int.class, int.class};
-                    c = (Component)myClass.getDeclaredConstructor(args).newInstance(this.app, (int)mouse.position.x, (int)mouse.position.y);
-                }
-                if(c instanceof Node){
-                    ((Node)c).position.sub(((Node)c).size.x / 2, ((Node)c).size.y / 2);
-                }
-                this.addComponent(c);
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-        }else if(!hit && app.mouseButton == app.RIGHT){
             if(app.keyPressed){
                 System.out.println("Key was held during right click");
-                if(app.keyCode == 157){
+                if(app.keyCode == 16){
                     mouse.isSelecting = true;
                 }
             }else {
+
                 mouse.isScrolling = true;
+            }
+        }else if(!hit && app.mouseButton == app.RIGHT){
+            if(mouse.selectedComponents.size() > 0){
+                mouse.clearSelection();
+            }else {
+
+                mouse.clearSelection();
+                try {
+                    String className = "com.bobby.nodes." + this.components[this.curComponent];
+                    Class myClass = Class.forName(className);
+                    Class[] args;
+                    Component c;
+                    if (className.startsWith("com.bobby.nodes.logic") && !className.startsWith("com.bobby.nodes.logic.compoundLogic")) {
+                        args = new Class[]{PApplet.class, int.class, int.class, int.class};
+                        c = (Component) myClass.getDeclaredConstructor(args).newInstance(this.app, (int) mouse.position.x, (int) mouse.position.y, this.logicGateInputs >= 2 ? this.logicGateInputs : 2);
+                    } else {
+                        args = new Class[]{PApplet.class, int.class, int.class};
+                        c = (Component) myClass.getDeclaredConstructor(args).newInstance(this.app, (int) mouse.position.x, (int) mouse.position.y);
+                    }
+                    if (c instanceof Node) {
+                        ((Node) c).position.sub(((Node) c).size.x / 2, ((Node) c).size.y / 2);
+                    }
+                    this.addComponent(c);
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -228,8 +243,6 @@ public class Circuit {
 
     public void mouseReleased(int mouseX, int mouseY) {
 
-
-
         if(mouse.attachedComponent != null) {
             mouse.attachedComponent.mouseReleased(mouse);
             mouse.attachedComponent = null;
@@ -238,6 +251,12 @@ public class Circuit {
                 if(c.isHovered(mouseX, mouseY)) {
                     mouse.mouseReleased(c);
                     break;
+                }else if(mouse.selectedComponents.size() > 0){
+                    for (Component comp:
+                         mouse.selectedComponents) {
+                        comp.mouseReleased(mouse);
+                    }
+                    mouse.mouseReleased(c);
                 }
             }
         }
