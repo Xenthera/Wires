@@ -50,20 +50,22 @@ public class Wire extends Component {
         int x2 = (int)destination.position.x;
         int y2 = (int)destination.position.y;
         applet.noFill();
-        applet.strokeWeight(8);
+
         //applet.stroke(0,0,0, 100);
         //applet.bezier(x, y, x + 100, y, x2 - 100,y2,x2,y2);
         applet.strokeWeight(2);
 
         int dis = applet.abs(x - x2);
 
-
         if(hasData) {
             applet.stroke(100, 100, 255);
         }else{
             applet.stroke(0,0,0);
         }
-        applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+        //applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+
+        if(((Main)applet).drawWires)
+            applet.line(x,y, x2, y2);
     }
 
     @Override
@@ -77,11 +79,13 @@ public class Wire extends Component {
         if(hasData) {
             applet.stroke(0);
             applet.strokeWeight(3);
-            applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            //applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            applet.line(x,y, x2, y2);
         }else{
             applet.strokeWeight(3);
             applet.stroke(255);
-            applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            //applet.bezier(x, y, x + dis/2, y, x2 - dis/2,y2,x2,y2);
+            applet.line(x,y, x2, y2);
         }
     }
 

@@ -57,7 +57,7 @@ public class Node extends Component {
     public void draw() {
         applet.stroke(0,100,255, 180);
         applet.strokeWeight(1);
-        applet.fill(0,0,150, 100);
+        applet.fill(0,0,150);
         applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);
 
         for (int i = 0; i < this.inputs.length; i++) {
@@ -85,6 +85,35 @@ public class Node extends Component {
 
     public PVector getCenter(){
         return new PVector(this.position.x + (this.size.x / 2), this.position.y + (this.size.y / 2));
+    }
+
+    public void drawIO(){
+        applet.noStroke();
+        if(((Main)applet).drawNodes) {
+            for (int i = 0; i < this.inputs.length; i++) {
+                if (this.inputs[i].wires.size() > 0) {
+                    applet.fill(0, 255, 0);
+                    //applet.stroke(0);
+                } else {
+                    applet.fill(255, 100);
+                    //applet.stroke(0);
+                }
+                int stepSize = (int) this.size.y / (this.inputs.length + 1);
+                applet.circle(this.position.x, this.position.y + (i + 1) * stepSize, 10);
+            }
+
+            for (int i = 0; i < this.outputs.length; i++) {
+                if (this.outputs[i].wires.size() > 0) {
+                    applet.fill(0, 255, 0);
+                    //applet.stroke(0);
+                } else {
+                    applet.fill(255, 100);
+                    //applet.stroke(0);
+                }
+                int stepSize = (int) this.size.y / (this.outputs.length + 1);
+                applet.circle(this.position.x + this.size.x, this.position.y + (i + 1) * stepSize, 10);
+            }
+        }
     }
 
     public void hover(){

@@ -208,7 +208,14 @@ public class Circuit {
             }
 
         }else if(!hit && app.mouseButton == app.RIGHT){
-            mouse.isScrolling = true;
+            if(app.keyPressed){
+                System.out.println("Key was held during right click");
+                if(app.keyCode == 157){
+                    mouse.isSelecting = true;
+                }
+            }else {
+                mouse.isScrolling = true;
+            }
         }
 
     }

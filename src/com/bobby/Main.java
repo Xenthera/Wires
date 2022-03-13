@@ -17,6 +17,9 @@ import java.util.HashMap;
 
 public class Main extends PApplet {
 
+
+    public String saveFileName = "savefile.dat";
+
     public MouseComponent mouseComponent;
     public Circuit masterCircuit;
     public Camera camera;
@@ -32,12 +35,16 @@ public class Main extends PApplet {
 
     boolean debug = false;
 
+    public boolean drawNodes = true;
+    public boolean drawWires = true;
+
     public static void main(String[] args) {
         PApplet.main("com.bobby.Main");
     }
 
     public void settings(){
         size(1280, 720);
+        noSmooth();
     }
 
     public void setup(){
@@ -53,7 +60,7 @@ public class Main extends PApplet {
         this.camera.setZoom(1f);
         this.screenPos = new PVector(0,0);
         this.screenSize = new PVector(width - 1, height - 1);
-        thread("tickThread");
+        //thread("tickThread");
         surface.setResizable(true);
         rPi = loadImage("RPI.png");
         textSize(12);
@@ -163,7 +170,7 @@ public class Main extends PApplet {
             draw_alternate();
             return;
         }
-
+        masterCircuit.tick();
 
         this.screenSize.x = width;
         this.screenSize.y = height;
@@ -230,8 +237,12 @@ public class Main extends PApplet {
             this.debug = !this.debug;
         }else if(keyCode == 87){
             writeCircuitToFile(masterCircuit);
+        }else if(keyCode == 78){
+            drawNodes = !drawNodes;
+        }else if(keyCode == 77){
+            drawWires = !drawWires;
         }else if(keyCode == 79){
-            Circuit c = readCircuitFromFile("testfile.tf");
+            Circuit c = readCircuitFromFile(saveFileName);
             if (c != null) {
                 masterCircuit = c;
             }
@@ -256,7 +267,7 @@ public class Main extends PApplet {
         }
 
         try {
-            FileOutputStream f = new FileOutputStream("testfile.tf");
+            FileOutputStream f = new FileOutputStream(saveFileName);
             ObjectOutputStream os = new ObjectOutputStream(f);
             os.writeObject(componentList);
             f.close();
@@ -311,10 +322,14 @@ public class Main extends PApplet {
                         Class[] args;
                         Component c;
 
-                        if (className.startsWith("com.bobby.nodes.logic")) {
+                        if (className.startsWith("com.bobby.nodes.logic.compoundLogic")) {
+                            args = new Class[]{PApplet.class, int.class, int.class};
+                            c = (Component) myClass.getDeclaredConstructor(args).newInstance(this, s.x, s.y);
+                        }
+                        else if (className.startsWith("com.bobby.nodes.logic")){
                             args = new Class[]{PApplet.class, int.class, int.class, int.class};
                             c = (Component) myClass.getDeclaredConstructor(args).newInstance(this, s.x, s.y, 2);
-                        } else {
+                        }else {
 
                             args = new Class[]{PApplet.class, int.class, int.class};
                             c = (Component) myClass.getDeclaredConstructor(args).newInstance(this, s.x, s.y);

@@ -10,10 +10,14 @@ public class MouseComponent extends Component {
     boolean isDrawingWire = false;
     boolean isDrawingMultiwire = false;
     boolean isScrolling = false;
+    boolean isSelecting = false;
+    private boolean _selecting = false;
     PVector wireStart;
     NodeIO origin, destination;
     Node nodeOrigin, nodeDestination;
     PVector deltaMouse, oldMouse, newMouse;
+
+    PVector selectOrigin;
 
     public MouseComponent(PApplet app, int x, int y){
         super(app, x, y);
@@ -52,6 +56,30 @@ public class MouseComponent extends Component {
             main.camera.position.x -= this.deltaMouse.x;
             main.camera.position.y -= this.deltaMouse.y;
         }
+
+        if(isSelecting){
+            if(_selecting == false){
+                _selecting = true;
+                selectBegin();
+            }
+        }
+
+        if(!isSelecting){
+            if(_selecting == true){
+                _selecting = false;
+                selectEnd();
+            }
+        }
+
+
+    }
+
+    private void selectBegin(){
+        selectOrigin = new PVector(position.x, position.y);
+    }
+
+    private void selectEnd(){
+        System.out.println("Ended selecting");
     }
 
     @Override
@@ -94,6 +122,33 @@ public class MouseComponent extends Component {
             applet.bezier(x, y + 3, x + dis/2, y + 3, x2 - dis/2,y2 + 3,x2,y2 + 3);
 
         }
+
+        if(_selecting){
+            applet.stroke(100,255,220, 100);
+            applet.strokeWeight(2);
+            applet.fill(100,255,220,50);
+            applet.rect(selectOrigin.x, selectOrigin.y, position.x - selectOrigin.x, position.y - selectOrigin.y);
+
+            applet.fill(255,0,0);
+            applet.circle(selectOrigin.x, selectOrigin.y, 20);
+
+            applet.circle(position.x, position.y, 20);
+
+            applet.fill(255,255,0);
+            PVector p1 = new PVector(selectOrigin.x, selectOrigin.y);
+            applet.fill(0,0,255);
+            PVector p2 = new PVector(position.x, position.y);
+
+
+            for (Component c : ((Main)applet).masterCircuit.sceneComponents) {
+                if(c.position.x >= selectOrigin.x && c.position.x <= position.x){
+                    if(c.position.y >= selectOrigin.y && c.position.y <= position.y){
+                        c.hover();
+                        applet.circle(c.position.x, c.position.y, 5);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -129,6 +184,7 @@ public class MouseComponent extends Component {
 
         }
         this.isScrolling = false;
+        this.isSelecting = false;
         endWireDraw(c);
         endMultiWiredraw(c);
     }
