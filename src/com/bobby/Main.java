@@ -25,9 +25,13 @@ public class Main extends PApplet {
     public Camera camera;
     PVector screenPos;
     PVector screenSize;
-    int backgroundPatternSize = 128;
-    int backgroundCornerRadius = 6;
+    int backgroundCornerRadius = 0;
     int backgroundGap = 1;
+
+    public static int GridSize = 32;
+
+    int backgroundPatternSize = GridSize - backgroundGap;
+
 
     ArrayList<Integer> IDs;
 
@@ -44,14 +48,9 @@ public class Main extends PApplet {
 
     public void settings(){
         size(1280, 720);
-        noSmooth();
     }
 
     public void setup(){
-
-
-
-
         masterCircuit = new Circuit(this);
         mouseComponent = new MouseComponent(this, 0, 0);
         masterCircuit.mouse = mouseComponent;
@@ -60,12 +59,9 @@ public class Main extends PApplet {
         this.camera.setZoom(1f);
         this.screenPos = new PVector(0,0);
         this.screenSize = new PVector(width - 1, height - 1);
-        //thread("tickThread");
         surface.setResizable(true);
         rPi = loadImage("RPI.png");
         textSize(12);
-
-
     }
 
 
@@ -159,17 +155,7 @@ public class Main extends PApplet {
 //        line(p1.x, p1.y, p2.x, p2.y);
 //        line(p3.x, p3.y, p4.x, p4.y);
     }
-
-
-
-
-
     public void draw(){
-
-        if(debug){
-            draw_alternate();
-            return;
-        }
         masterCircuit.tick();
 
         this.screenSize.x = width;
@@ -180,10 +166,10 @@ public class Main extends PApplet {
         //DRAW
         this.camera.begin();
         background(0);
-        fill( 60);
+        fill( 31,113,188);
         noStroke();
 
-        background(50);
+        background(43,155,211);
         for (int i = (int) (this.screenPos.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) - 1; i <= (this.screenSize.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) + 1; i++) {
             for (int j = (int) (this.screenPos.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) - 1; j <= (this.screenSize.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) + 1; j++) {
                 rect(i * (backgroundPatternSize + backgroundGap), j * (backgroundPatternSize + backgroundGap), (backgroundPatternSize), (backgroundPatternSize), backgroundCornerRadius);

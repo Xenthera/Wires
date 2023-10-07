@@ -3,17 +3,14 @@ package com.bobby.nodes.logic;
 import com.bobby.nodes.Node;
 import processing.core.PApplet;
 
-public class Not extends Node {
+public class Not extends LogicNode {
 
     int color;
     boolean inValue = false;
 
 
     public Not(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 40, 30, 3, 1, 1);
-        color = app.color(100,100,100);
-        //this.tickDelay = 60;
-        this.scheduleTick(this.tickDelay);
+        super(app, x, y, 1, 1,  1, 1, "NOT", app.color(255,20,20));
     }
 
     public void tick(){
@@ -25,20 +22,5 @@ public class Not extends Node {
             this.outputs[0].sendData(out);
         }
         super.tick();
-    }
-
-
-
-    public void draw() {
-        applet.noStroke();
-
-
-
-        applet.fill(this.color);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
-        applet.fill(255, 255);
-        super.drawIO();
-        applet.textAlign(applet.CENTER, applet.CENTER);
-        applet.text("NOT", this.position.x + this.size.x / 2, this.position.y + this.size.y / 2);
     }
 }

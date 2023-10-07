@@ -6,8 +6,8 @@ public class TestNode extends Node {
 
     public int color;
 
-    public TestNode(PApplet app, int x, int y, int width, int height, int r) {
-        super(app, x, y, width, height, r, 1, 1);
+    public TestNode(PApplet app, int x, int y, int width, int height) {
+        super(app, x, y, width, height,  1, 1);
         color = app.color(255,100,255, 200);
     }
 
@@ -20,7 +20,7 @@ public class TestNode extends Node {
         applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 255);
         applet.strokeWeight(2);
         applet.fill(this.color);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);
+        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
         applet.fill(255, 255);
         applet.text((int)this.position.x + ", " + (int)this.position.y, this.position.x + 20, this.position.y + 20);
         for (int i = 0; i < this.inputs.length; i++) {

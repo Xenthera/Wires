@@ -1,16 +1,16 @@
 package com.bobby.nodes.logic.compoundLogic;
 
 import com.bobby.nodes.Node;
+import com.bobby.nodes.logic.LogicNode;
 import processing.core.PApplet;
 
-public class FullAdder extends Node {
+public class FullAdder extends LogicNode {
 
     int color;
 
 
     public FullAdder(PApplet app, int x, int y) {
-        super(app, x, y, 55, 85, 3, 3, 2);
-        color = app.color(0,100,2550);
+        super(app, x, y, 2, 3,  3, 2, "Full \nAdder", app.color(0,100,255));
     }
 
     public void tick(){
@@ -29,14 +29,11 @@ public class FullAdder extends Node {
 
     public void draw() {
         applet.noStroke();
-
-
-
         applet.fill(this.color);
         applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
         applet.fill(255, 255);
         super.drawIO();
         applet.textAlign(applet.CENTER, applet.CENTER);
-        applet.text("Full \nAdder", this.position.x + this.size.x / 2, this.position.y + this.size.y / 2);
+
     }
 }

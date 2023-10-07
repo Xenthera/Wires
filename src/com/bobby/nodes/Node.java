@@ -10,29 +10,27 @@ import processing.core.PVector;
 public class Node extends Component {
 
     public PVector size;
-    protected int radius;
+    //protected int radius;
     public NodeIO[] inputs;
     public NodeIO[] outputs;
+
     public int tickDelay = 1;
     protected int tickDelayCounter;
-
-
-    public Node(PApplet app, int x, int y, int width, int height, int r, int numInputs, int numOutputs){
+    public Node(PApplet app, int x, int y, int gridWidth, int gridHeight, int numInputs, int numOutputs){
         super(app, x, y);
-        this.size = new PVector(width, height);
-        this.radius = r;
+        this.size = new PVector(gridWidth * Main.GridSize, gridHeight * Main.GridSize);
         this.isGrabbable = true;
         this.updateLayer = 0;
         this.inputs = new NodeIO[numInputs];
         this.outputs = new NodeIO[numOutputs];
-        int stepSize = (int)this.size.y / (this.inputs.length + 1);
+        int stepSize = numInputs > 0 ? (int)this.size.y / (this.inputs.length) : 0;
         for (int i = 0; i < numInputs; i++) {
-            inputs[i] = new NodeIO(app, 0, (i + 1) * stepSize, this, NodeIO.INPUT);
+            inputs[i] = new NodeIO(app, 0, (int)((i + 1) * stepSize - (this.size.y / 2) / numInputs), this, NodeIO.INPUT);
             ((Main)app).masterCircuit.addComponent(inputs[i]);
         }
-        stepSize = (int)this.size.y / (this.outputs.length + 1);
+        stepSize = numOutputs > 0 ? (int)this.size.y / (this.outputs.length) : 0;
         for (int i = 0; i < numOutputs; i++) {
-            outputs[i] = new NodeIO(app, (int)this.size.x, (i + 1) * stepSize, this, NodeIO.OUTPUT);
+            outputs[i] = new NodeIO(app, (int)this.size.x, (int)((i + 1) * stepSize - (this.size.y / 2) / numOutputs), this, NodeIO.OUTPUT);
             ((Main)app).masterCircuit.addComponent(outputs[i]);
         }
     }
@@ -55,32 +53,8 @@ public class Node extends Component {
 
     @Override
     public void draw() {
-        applet.stroke(0,100,255, 180);
-        applet.strokeWeight(1);
-        applet.fill(0,0,150);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);
 
-        for (int i = 0; i < this.inputs.length; i++) {
-            if(this.inputs[i].wires.size() > 0) {
-                applet.fill(0,255,0);
-                applet.stroke(0);
-            }else{
-                applet.fill(255, 100);
-                applet.stroke(0);
-            }
-            applet.circle(this.position.x, this.position.y + (int)this.size.y / 2, 10);
-        }
 
-        for (int i = 0; i < this.outputs.length; i++) {
-            if(this.outputs[i].wires.size() > 0) {
-                applet.fill(0,255,0);
-                applet.stroke(0);
-            }else{
-                applet.fill(255, 100);
-                applet.stroke(0);
-            }
-            applet.circle(this.position.x + this.size.x, this.position.y + (int)this.size.y / 2, 10);
-        }
     }
 
     public PVector getCenter(){
@@ -91,27 +65,27 @@ public class Node extends Component {
         applet.noStroke();
         if(((Main)applet).drawNodes) {
             for (int i = 0; i < this.inputs.length; i++) {
-                if (this.inputs[i].wires.size() > 0) {
+                if (!this.inputs[i].wires.isEmpty()) {
                     applet.fill(0, 255, 0);
                     //applet.stroke(0);
                 } else {
-                    applet.fill(255, 100);
+                    applet.fill(30, 255);
                     //applet.stroke(0);
                 }
-                int stepSize = (int) this.size.y / (this.inputs.length + 1);
-                applet.circle(this.position.x, this.position.y + (i + 1) * stepSize, 10);
+                int stepSize = (int) this.size.y / (this.inputs.length);
+                applet.circle(this.position.x, this.position.y + (i + 1) * stepSize - (this.size.y / 2) / this.inputs.length, 10);
             }
 
             for (int i = 0; i < this.outputs.length; i++) {
-                if (this.outputs[i].wires.size() > 0) {
-                    applet.fill(0, 255, 0);
+                if (!this.outputs[i].wires.isEmpty()) {
+                    applet.fill(0, 100, 255);
                     //applet.stroke(0);
                 } else {
-                    applet.fill(255, 100);
+                    applet.fill(30, 255);
                     //applet.stroke(0);
                 }
-                int stepSize = (int) this.size.y / (this.outputs.length + 1);
-                applet.circle(this.position.x + this.size.x, this.position.y + (i + 1) * stepSize, 10);
+                int stepSize = (int) this.size.y / (this.outputs.length);
+                applet.circle(this.position.x + this.size.x, this.position.y + (i + 1) * stepSize - (this.size.y / 2) / this.outputs.length, 10);
             }
         }
     }
@@ -120,7 +94,7 @@ public class Node extends Component {
         applet.noFill();
         applet.strokeWeight(1);
         applet.stroke(255);
-        applet.rect(this.position.x - 2, this.position.y - 2, this.size.x + 4, this.size.y + 4, this.radius);
+        applet.rect(this.position.x - 1, this.position.y - 1, this.size.x + 1, this.size.y + 1);
     }
 
     @Override

@@ -1,16 +1,16 @@
 package com.bobby.nodes.logic;
 
+import com.bobby.Main;
 import com.bobby.nodes.Node;
 import processing.core.PApplet;
 
-public class Buffer extends Node {
+public class Buffer extends LogicNode {
 
     int color;
     boolean inValue = false;
 
     public Buffer(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 18, 15, 3, 1, 1);
-        color = app.color(30);
+        super(app, x, y, 1, 1,  1, 1, "", app.color(255));
         this.tickDelay = 0;
     }
 

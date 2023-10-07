@@ -32,7 +32,7 @@ public class Circuit {
         sceneComponentsReversed = new ArrayList<>();
         sceneComponentsUpdateOrder = new ArrayList<>();
         this.app = app;
-        components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder", "logic.compoundLogic.BinaryToHexSSDDecoder", "RaspberryPi", "RaspberryPiWireless"};
+        components = new String[]{"ToggleSwitch", "Switch","Light","logic.Buffer", "logic.And", "logic.Or", "logic.Not","logic.Nor","logic.Nand", "logic.Xor", "logic.compoundLogic.FullAdder", "logic.compoundLogic.SSD", "logic.compoundLogic.BCDToSSDDecoder", "logic.compoundLogic.BinaryToHexSSDDecoder"};
 
         curComponent = 0;
 
@@ -81,16 +81,22 @@ public class Circuit {
 
     public void update(){
         for (Component c : sceneComponents) {
-            if(c.parent != null){
-                c.position.set(PVector.add(c.parent.position, c.parentOffset));
+            if(c.parent != null) {
+                if (c instanceof Node) {
+                    int snappedMouseX = Math.round((mouse.position.x - (Main.GridSize / 2)) / Main.GridSize) * Main.GridSize;
+                    int snappedMouseY = Math.round((mouse.position.y - (Main.GridSize / 2)) / Main.GridSize) * Main.GridSize;
+                    int snappedParentOffsetX = Math.round((c.parentOffset.x - (Main.GridSize / 2)) / Main.GridSize) * Main.GridSize;
+                    int snappedParentOffsetY = Math.round((c.parentOffset.y - (Main.GridSize / 2)) / Main.GridSize) * Main.GridSize;
+                    c.position.set(PVector.add(new PVector(snappedMouseX, snappedMouseY), new PVector(snappedParentOffsetX + Main.GridSize, snappedParentOffsetY + Main.GridSize)));
+                }else{
+                    c.position.set(PVector.add(c.parent.position, c.parentOffset));
+                }
             }
             c.update();
         }
     }
 
     public void draw(){
-
-
         Main temp = (Main)app;
         for (Component c : sceneComponents) {
             if((c.position.x + c.getSize().x) - temp.camera.position.x >= temp.screenPos.x && (c.position.y + c.getSize().y) - temp.camera.position.y >= temp.screenPos.y) {
@@ -201,33 +207,29 @@ public class Circuit {
                 mouse.clearSelection();
             }else {
 
-                mouse.clearSelection();
                 try {
                     String className = "com.bobby.nodes." + this.components[this.curComponent];
                     Class myClass = Class.forName(className);
                     Class[] args;
                     Component c;
+
+                    int snappedMouseX = Math.round((mouse.position.x - (Main.GridSize / 2)) / Main.GridSize) * Main.GridSize;
+                    int snappedMouseY = Math.round((mouse.position.y - (Main.GridSize / 2)) / Main.GridSize) * Main.GridSize;
+
                     if (className.startsWith("com.bobby.nodes.logic") && !className.startsWith("com.bobby.nodes.logic.compoundLogic")) {
                         args = new Class[]{PApplet.class, int.class, int.class, int.class};
-                        c = (Component) myClass.getDeclaredConstructor(args).newInstance(this.app, (int) mouse.position.x, (int) mouse.position.y, this.logicGateInputs >= 2 ? this.logicGateInputs : 2);
+                        c = (Component) myClass.getDeclaredConstructor(args).newInstance(this.app, snappedMouseX, snappedMouseY, this.logicGateInputs >= 2 ? this.logicGateInputs : 2);
                     } else {
                         args = new Class[]{PApplet.class, int.class, int.class};
-                        c = (Component) myClass.getDeclaredConstructor(args).newInstance(this.app, (int) mouse.position.x, (int) mouse.position.y);
+                        c = (Component) myClass.getDeclaredConstructor(args).newInstance(this.app, snappedMouseX, snappedMouseY);
                     }
                     if (c instanceof Node) {
-                        ((Node) c).position.sub(((Node) c).size.x / 2, ((Node) c).size.y / 2);
+                        //((Node) c).position.sub(((Node) c).size.x / 2, ((Node) c).size.y / 2);
                     }
                     this.addComponent(c);
 
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (ClassNotFoundException | InstantiationException | InvocationTargetException |
+                         NoSuchMethodException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }

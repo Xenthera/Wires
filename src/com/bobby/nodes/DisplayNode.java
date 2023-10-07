@@ -7,9 +7,8 @@ public class DisplayNode extends Node {
     public int color;
     private int value = 0;
 
-    public DisplayNode(PApplet app, int x, int y, int width, int height, int r) {
-        super(app, x, y, width, height, r, 1, 0);
-        color = app.color(255,0,100, 100);
+    public DisplayNode(PApplet app, int x, int y, int width, int height) {
+        super(app, x, y, width, height, 1, 0);
     }
 
     public void tick(){
@@ -20,7 +19,7 @@ public class DisplayNode extends Node {
         applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
         applet.strokeWeight(2);
         applet.fill(this.color);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y, this.radius);
+        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
         applet.fill(255, 255);
         applet.text(this.value, this.position.x + this.size.x / 2 - 10, this.position.y + 5 + this.size.y / 2);
         for (int i = 0; i < this.inputs.length; i++) {

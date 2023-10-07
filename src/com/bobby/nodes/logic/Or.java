@@ -3,14 +3,13 @@ package com.bobby.nodes.logic;
 import com.bobby.nodes.Node;
 import processing.core.PApplet;
 
-public class Or extends Node {
+public class Or extends LogicNode {
 
     int color;
     boolean inValue = false;
 
     public Or(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 45, 45, 3, numInputs, 1);
-        color = app.color(255,100,255);
+        super(app, x, y, 1, 1,  numInputs, 1, "OR",app.color(255,100,255));
     }
 
     public void tick(){
@@ -29,18 +28,5 @@ public class Or extends Node {
         super.tick();
     }
 
-    public void draw() {
-        applet.noStroke();
 
-
-
-        applet.fill(this.color);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
-        applet.fill(255, 255);
-
-        super.drawIO();
-
-        applet.textAlign(applet.CENTER, applet.CENTER);
-        applet.text("OR", this.position.x + this.size.x / 2, this.position.y + this.size.y / 2);
-    }
 }
