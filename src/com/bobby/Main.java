@@ -74,7 +74,7 @@ public class Main extends PApplet {
     public void tickThread(){
         //Minecraft's update loop apparently :P
         long lastTime = System.nanoTime();
-        double amountOfTicks = 60;
+        double amountOfTicks = 1000;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();
