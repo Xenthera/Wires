@@ -40,10 +40,10 @@ public class Circuit {
 
     public boolean RegisterID(int ID){
         if(!IDs.contains(ID)){
-            System.out.println("Registering ID: " + ID);
             IDs.add(ID);
             return true;
         }
+        System.out.println("COLLISION!!!!1!");
         return false;
     }
 
@@ -70,12 +70,10 @@ public class Circuit {
     }
 
     public void tick(){
-        for (Component c : sceneComponentsUpdateOrder) {
-            try {
+        for (Component c : sceneComponentsReversed) {
+
                 c.tick();
-            }catch (ConcurrentModificationException e){
-                //Oh well keep going.
-            }
+
         }
     }
 

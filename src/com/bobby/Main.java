@@ -26,7 +26,7 @@ public class Main extends PApplet {
     PVector screenPos;
     PVector screenSize;
     int backgroundCornerRadius = 0;
-    int backgroundGap = 1;
+    int backgroundGap = 0;
 
     public static int GridSize = 32;
 
@@ -42,6 +42,7 @@ public class Main extends PApplet {
     public boolean drawNodes = true;
     public boolean drawWires = true;
 
+    private PImage bg;
     public static void main(String[] args) {
         PApplet.main("com.bobby.Main");
     }
@@ -62,6 +63,10 @@ public class Main extends PApplet {
         surface.setResizable(true);
         rPi = loadImage("RPI.png");
         textSize(12);
+
+        bg = loadImage("BG.png");
+
+        thread("tickThread");
     }
 
 
@@ -69,7 +74,7 @@ public class Main extends PApplet {
     public void tickThread(){
         //Minecraft's update loop apparently :P
         long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0;
+        double amountOfTicks = 60;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();
@@ -156,7 +161,8 @@ public class Main extends PApplet {
 //        line(p3.x, p3.y, p4.x, p4.y);
     }
     public void draw(){
-        masterCircuit.tick();
+        //masterCircuit.tick();
+
 
         this.screenSize.x = width;
         this.screenSize.y = height;
@@ -169,10 +175,10 @@ public class Main extends PApplet {
         fill( 31,113,188);
         noStroke();
 
-        background(43,155,211);
+//        background(43,155,211);
         for (int i = (int) (this.screenPos.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) - 1; i <= (this.screenSize.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) + 1; i++) {
             for (int j = (int) (this.screenPos.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) - 1; j <= (this.screenSize.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) + 1; j++) {
-                rect(i * (backgroundPatternSize + backgroundGap), j * (backgroundPatternSize + backgroundGap), (backgroundPatternSize), (backgroundPatternSize), backgroundCornerRadius);
+                image(bg,i * (backgroundPatternSize + backgroundGap), j * (backgroundPatternSize + backgroundGap));
             }
         }
 
@@ -278,6 +284,7 @@ public class Main extends PApplet {
         Circuit cir = new Circuit(this);
         cir.mouse = mouseComponent;
 
+
         HashMap<String, Component> map = new HashMap<>();
 
         try {
@@ -322,6 +329,8 @@ public class Main extends PApplet {
                         }
 
                         c.ID = s.ID;
+
+                        cir.RegisterID(c.ID);
 
                         if(c instanceof Node){
                             for (NodeIO io : ((Node)c).inputs) {
