@@ -5,13 +5,13 @@ import com.bobby.Main;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class ToggleSwitch extends Node {
+public class ToggleSwitch extends Switch {
 
     public int color;
     public boolean isOn = false;
 
     public ToggleSwitch(PApplet app, int x, int y) {
-        super(app, x, y, 1, 1,  0, 1);
+        super(app, x, y);
         color = app.color(0,255,255);
     }
 
@@ -42,5 +42,8 @@ public class ToggleSwitch extends Node {
             this.isOn = !this.isOn;
         }
         return new PVector(-(mouse.position.x - this.position.x), -(mouse.position.y - this.position.y));
+    }
+
+    public void mouseReleased(Component mouse){
     }
 }

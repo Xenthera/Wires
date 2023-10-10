@@ -27,13 +27,5 @@ public class FullAdder extends LogicNode {
         super.tick();
     }
 
-    public void draw() {
-        applet.noStroke();
-        applet.fill(this.color);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
-        applet.fill(255, 255);
-        super.drawIO();
-        applet.textAlign(applet.CENTER, applet.CENTER);
 
-    }
 }

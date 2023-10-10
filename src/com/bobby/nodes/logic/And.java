@@ -9,7 +9,7 @@ public class And extends LogicNode {
     boolean inValue = false;
 
     public And(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 1, 1,  numInputs, 1, "AND", app.color(255,255,100));
+        super(app, x, y, 1, 1,  numInputs, 1, "AND", app.color(255,233,100));
         //this.tickDelay = 60;
     }
 

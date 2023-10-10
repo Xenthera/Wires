@@ -47,11 +47,11 @@ public class SSD extends LogicNode {
     }
 
     public void draw() {
-        applet.noStroke();
+
 
         applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 255);
         applet.strokeWeight(1);
-        applet.fill(this.color);
+        applet.fill(this.color, 180);
         applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
 
         drawDisplay();

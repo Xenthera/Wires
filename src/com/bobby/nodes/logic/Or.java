@@ -9,7 +9,7 @@ public class Or extends LogicNode {
     boolean inValue = false;
 
     public Or(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 1, 1,  numInputs, 1, "OR",app.color(255,100,255));
+        super(app, x, y, 1, 1,  numInputs, 1, "OR",app.color(101,255,50));
     }
 
     public void tick(){

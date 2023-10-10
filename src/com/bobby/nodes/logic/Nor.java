@@ -9,7 +9,7 @@ public class Nor extends LogicNode {
     boolean inValue = false;
 
     public Nor(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 1, 1,  numInputs, 1, "NOR", app.color(255,100,255));
+        super(app, x, y, 1, 1,  numInputs, 1, "NOR", app.color(50,67,255));
     }
 
     public void tick(){

@@ -9,7 +9,7 @@ public class Nand extends LogicNode {
     boolean inValue = false;
 
     public Nand(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 1, 1,  numInputs, 1, "NAND", app.color(255,255,100));
+        super(app, x, y, 1, 1,  numInputs, 1, "NAND", app.color(50,247,255));
     }
 
     public void tick(){

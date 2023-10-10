@@ -10,7 +10,7 @@ public class Not extends LogicNode {
 
 
     public Not(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 1, 1,  1, 1, "NOT", app.color(255,20,20));
+        super(app, x, y, 1, 1,  1, 1, "NOT", app.color(255,70,70));
     }
 
     public void tick(){

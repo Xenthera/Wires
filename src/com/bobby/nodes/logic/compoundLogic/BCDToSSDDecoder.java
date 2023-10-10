@@ -39,15 +39,5 @@ public class BCDToSSDDecoder extends LogicNode {
 
     }
 
-    public void draw() {
-        applet.noStroke();
 
-        applet.stroke(applet.red(this.color), applet.green(this.color), applet.blue(this.color), 200);
-        applet.strokeWeight(2);
-        applet.fill(this.color);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
-        applet.fill(255, 255);
-        super.drawIO();
-        applet.textAlign(applet.CENTER, applet.CENTER);
-    }
 }

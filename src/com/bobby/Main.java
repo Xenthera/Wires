@@ -248,6 +248,8 @@ public class Main extends PApplet {
             if(c instanceof Wire){
                 Wire w = (Wire)c;
 
+                w.hasData = w.origin.data > 0;
+
                 componentList.add(new SerializableWire(c.getClass().toString(), w.ID, (int)c.position.x, (int)c.position.y,
                         w.origin.parent.ID, indexOf(w.origin.parent.outputs, w.origin),
                         w.destination.parent.ID, indexOf(w.destination.parent.inputs, w.destination)));

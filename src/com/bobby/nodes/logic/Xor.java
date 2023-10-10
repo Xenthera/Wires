@@ -9,7 +9,7 @@ public class Xor extends LogicNode {
     boolean inValue = false;
 
     public Xor(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 1, 1,  2, 1,"XOR", app.color(100,255,255));
+        super(app, x, y, 1, 1,  2, 1,"XOR", app.color(234,50,255));
     }
 
     public void tick(){

@@ -9,6 +9,8 @@ public class SerializableComponent implements Serializable {
     public int x,y;
     public int ID;
 
+
+
     public SerializableComponent(String componentName, int ID, int x, int y){
         this.name = componentName;
         this.ID = ID;

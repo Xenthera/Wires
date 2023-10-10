@@ -10,7 +10,7 @@ public class Buffer extends LogicNode {
     boolean inValue = false;
 
     public Buffer(PApplet app, int x, int y, int numInputs) {
-        super(app, x, y, 1, 1,  1, 1, "", app.color(255));
+        super(app, x, y, 1, 1,  1, 1, "", app.color(50));
         this.tickDelay = 0;
     }
 
@@ -21,14 +21,5 @@ public class Buffer extends LogicNode {
         super.tick();
     }
 
-    public void draw() {
-        applet.noStroke();
 
-
-
-        applet.fill(this.color);
-        applet.rect(this.position.x, this.position.y, this.size.x, this.size.y);
-        applet.fill(255, 255);
-        super.drawIO();
-    }
 }
