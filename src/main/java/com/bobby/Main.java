@@ -42,7 +42,7 @@ public class Main extends PApplet {
     public boolean drawNodes = true;
     public boolean drawWires = true;
 
-    private PImage bg;
+    //private PImage bg;
     public static void main(String[] args) {
         PApplet.main("com.bobby.Main");
     }
@@ -61,10 +61,10 @@ public class Main extends PApplet {
         this.screenPos = new PVector(0,0);
         this.screenSize = new PVector(width - 1, height - 1);
         surface.setResizable(true);
-        rPi = loadImage("RPI.png");
+
         textSize(12);
 
-        bg = loadImage("BG.png");
+        //bg = loadImage("BG.png");
 
         thread("tickThread");
     }
@@ -74,7 +74,7 @@ public class Main extends PApplet {
     public void tickThread(){
         //Minecraft's update loop apparently :P
         long lastTime = System.nanoTime();
-        double amountOfTicks = 1000;
+        double amountOfTicks = 60;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();
@@ -171,14 +171,14 @@ public class Main extends PApplet {
 
         //DRAW
         this.camera.begin();
-        background(0);
+        background(200);
         fill( 31,113,188);
         noStroke();
 
 //        background(43,155,211);
         for (int i = (int) (this.screenPos.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) - 1; i <= (this.screenSize.x + this.camera.position.x) / (backgroundPatternSize + backgroundGap) + 1; i++) {
             for (int j = (int) (this.screenPos.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) - 1; j <= (this.screenSize.y + this.camera.position.y) / (backgroundPatternSize + backgroundGap) + 1; j++) {
-                image(bg,i * (backgroundPatternSize + backgroundGap), j * (backgroundPatternSize + backgroundGap));
+                //image(bg,i * (backgroundPatternSize + backgroundGap), j * (backgroundPatternSize + backgroundGap));
             }
         }
 

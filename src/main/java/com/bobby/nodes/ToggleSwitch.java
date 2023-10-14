@@ -45,5 +45,7 @@ public class ToggleSwitch extends Switch {
     }
 
     public void mouseReleased(Component mouse){
+        super.mouseReleased(mouse);
+        
     }
 }

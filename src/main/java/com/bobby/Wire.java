@@ -58,9 +58,9 @@ public class Wire extends Component {
         int dis = applet.abs(x - x2);
 
         if(hasData) {
-            applet.stroke(100, 100, 255);
+            applet.stroke(100, 100, 255, 60);
         }else{
-            applet.stroke(0,0,0);
+            applet.stroke(0,0,0, 60);
         }
 
 

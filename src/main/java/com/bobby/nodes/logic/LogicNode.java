@@ -10,13 +10,13 @@ public class LogicNode extends Node {
     protected int color;
     protected String displayText;
 
-    protected PImage img;
+    //protected PImage img;
 
     public LogicNode(PApplet app, int x, int y, int gridWidth, int gridHeight, int numInputs, int numOutputs, String text, int color) {
         super(app, x, y, gridWidth, gridHeight, numInputs, numOutputs);
         this.displayText = text;
         this.color = color;
-        img = app.loadImage("Node.png");
+        //img = app.loadImage("Node.png");
     }
 
 
@@ -27,7 +27,7 @@ public class LogicNode extends Node {
         applet.tint(this.color, 180);
         for (int i = 0; i < this.size.x / Main.GridSize; i++) {
             for (int j = 0; j < this.size.y / Main.GridSize; j++) {
-                applet.image(img, this.position.x + (i * Main.GridSize), this.position.y + (j * Main.GridSize));
+                //applet.image(img, this.position.x + (i * Main.GridSize), this.position.y + (j * Main.GridSize));
             }
         }
         applet.rect(this.position.x, this.position.y, this.size.x - 1, this.size.y - 1);
